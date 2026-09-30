@@ -4,25 +4,25 @@ import Button from '../../components/Button.astro';
 import CalendarDots from '../../icons/calendar-dots.svg';
 import ArrowRight from '../../icons/arrow-right.svg';
 import UserCircleGear from '../../icons/user-circle-gear.svg';
-import { moreWorks, works } from '../../data/works';
+import { getWorks, moreWorks } from '../../data/works';
 import Base from '../../layouts/Base.astro';
 
-export function getStaticPaths() {
-	return works.map((work) => ({ params: { slug: work.slug }, props: { work } }));
+export async function getStaticPaths() {
+	const works = await getWorks();
+	return works.map((work) => ({ params: { slug: work.slug }, props: { work, more: moreWorks(works, work.slug) } }));
 }
 
-const { work } = Astro.props;
-const more = moreWorks(work.slug);
+const { work, more } = Astro.props;
 ---
 
-<Base title={work.title} description={work.summaryText}>
+<Base title={work.title} description={work.summary}>
 	<div class="page">
 		<header>
 			<div class="headline">
 				<div class="content">
 					<div class="head-text">
 						<h1 class="t-h1" data-appear>{work.title}</h1>
-						{work.summary && <p class="summary t-body-m" set:html={work.summary} data-appear style="--appear-delay: 0.2s" />}
+						{work.summary && <p class="summary t-body-m" data-appear style="--appear-delay: 0.2s">{work.summary}</p>}
 					</div>
 					<ul class="tags" data-appear style="--appear-delay: 0.4s">
 						<li class="tag">
@@ -42,24 +42,21 @@ const more = moreWorks(work.slug);
 				)}
 			</div>
 			<div class="thumb">
-				<Image src={work.cover} alt="" widths={[640, 1120, 1680, 2240]} sizes="(min-width: 1200px) 1120px, 100vw" loading="eager" />
+				<Image src={work.cover.src} width={work.cover.width} height={work.cover.height} alt={work.cover.alt} widths={[640, 1120, 1680, 2240]} sizes="(min-width: 1200px) 1120px, 100vw" loading="eager" />
 			</div>
 		</header>
 
 		<div class="details">
 			<div class="overview">
-				{
-					work.blocks.map((block) =>
-						block.heading ? <h2 class="t-subtitle-l" set:html={block.html} /> : <p set:html={block.html} />,
-					)
-				}
+				<h2 class="t-subtitle-l">Overview</h2>
+				{work.paragraphs.map((html) => <p set:html={html} />)}
 			</div>
 			{
 				work.gallery.length > 0 && (
 					<div class="gallery">
-						{work.gallery.map((src) => (
+						{work.gallery.map((shot) => (
 							<div class="shot">
-								<Image src={src} alt="" widths={[640, 1120, 1680, 2240]} sizes="(min-width: 1200px) 1120px, 100vw" />
+								<Image src={shot.src} width={shot.width} height={shot.height} alt={shot.alt} widths={[640, 1120, 1680, 2240]} sizes="(min-width: 1200px) 1120px, 100vw" />
 							</div>
 						))}
 					</div>
@@ -77,11 +74,11 @@ const more = moreWorks(work.slug);
 						<li>
 							<a class="more-card" href={`/work/${other.slug}`}>
 								<span class="more-media">
-									<Image src={other.cover} alt="" widths={[240, 480]} sizes="220px" />
+									<Image src={other.cover.src} width={other.cover.width} height={other.cover.height} alt="" widths={[240, 480]} sizes="220px" />
 								</span>
 								<span class="more-text">
 									<span class="t-subtitle-m">{other.title}</span>
-									{other.summaryText && <span class="t-body-m clamp">{other.summaryText}</span>}
+									{other.summary && <span class="t-body-m clamp">{other.summary}</span>}
 								</span>
 							</a>
 						</li>

@@ -25,3 +25,7 @@ pnpm-debug.log*
 
 # tooling
 .playwright-mcp/
+
+# generated seed (contains machine-specific paths)
+studio/seed/works.ndjson
+.sanity/

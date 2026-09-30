@@ -9,14 +9,25 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "studio": "sanity dev",
+    "studio:deploy": "sanity deploy",
+    "seed": "node studio/seed/make-seed.mjs"
   },
   "dependencies": {
+    "@sanity/client": "^8.9.0",
     "astro": "^7.3.5",
     "lenis": "^1.3.26",
     "sharp": "^0.35.5"
   },
   "allowScripts": {
     "esbuild": true
+  },
+  "devDependencies": {
+    "@types/react": "^19.3.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "sanity": "^6.17.0",
+    "styled-components": "^6.5.3"
   }
 }

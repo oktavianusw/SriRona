@@ -3,6 +3,9 @@ import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
 export default defineConfig({
-	// TODO: set `site` to the production URL once the domain is decided (enables canonical + og:image).
+	// Change to the custom domain once it is decided (drives canonical URLs and og:image).
+	site: 'https://srirona.vercel.app',
 	devToolbar: { enabled: false },
+	// Work images live in Sanity; Astro downloads and optimises them at build time.
+	image: { domains: ['cdn.sanity.io'] },
 });

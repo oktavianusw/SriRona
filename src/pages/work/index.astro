@@ -1,8 +1,9 @@
 ---
 import WorkCard from '../../components/WorkCard.astro';
-import { works } from '../../data/works';
+import { getWorks } from '../../data/works';
 import Base from '../../layouts/Base.astro';
 
+const works = await getWorks();
 const intro = 'Karya masing-masing dari kami yang membuat kami bangga dalam proses dan pengerjaannya.';
 ---
 

@@ -59,14 +59,29 @@ Styling pakai CSS biasa (scoped style Astro), tanpa Tailwind/framework UI.
 Hasil banding (Playwright, selisih piksel vs Framer): mayoritas halaman/breakpoint < 1%; Home 4–6% (frame video hero berbeda tiap load); tinggi halaman pas atau ±3px.
 
 ### Fase 4 — Karya + Sanity
-Butuh: project Sanity dibuat (atas `studiosrirona@gmail.com`) → project ID.
-- [ ] Skema "Karya" + Sanity Studio (di-host di `*.sanity.studio`, situs tetap statis)
-- [ ] `/work` (grid, hormati toggle tampil) dan `/work/[slug]`
-- [ ] Migrasi 6 karya + gambarnya ke Sanity
-- [ ] Undang tim studio sebagai editor
-- **Cek:** tambah/ubah karya di Studio → muncul di build lokal
+Project Sanity: **SriRona**, ID `48dbdtpq`, dataset `production` (publik untuk baca), `studiosrirona@gmail.com` sudah diundang sebagai Administrator. Situs: https://srirona.vercel.app
+- [x] Skema "Karya" (`studio/schemaTypes/work.ts`), Studio (`sanity.config.ts`, host `srirona.sanity.studio`)
+- [x] Situs membaca karya dari Sanity saat build (`src/data/works.ts`); `/work`, `/work/[slug]` dan "Explore more" dari data CMS
+- [x] Data 6 karya + gambar disiapkan untuk impor (`studio/seed/`), konversi teks diuji tanpa selisih
+- [ ] **Impor 6 karya ke Sanity** (butuh `sanity login`, lihat di bawah)
+- [ ] **Deploy Studio** (`pnpm studio:deploy`)
+- [ ] Undang tim studio sebagai Editor
+- [ ] Webhook Sanity → Vercel (rebuild otomatis saat Publish)
+- **Cek:** ubah karya di Studio → Publish → situs produksi berubah dalam 1–2 menit
 
-Kalau project Sanity belum ada saat fase ini mulai, halaman dibangun dulu dengan data lokal, lalu disambungkan.
+Perintah (dari root project):
+
+```bash
+pnpm sanity login                  # sekali, masuk dengan akun Sanity
+pnpm seed                          # buat studio/seed/works.ndjson
+pnpm sanity dataset import studio/seed/works.ndjson production --replace
+pnpm studio                        # Studio lokal di http://localhost:3333
+pnpm studio:deploy                 # publikasi Studio ke srirona.sanity.studio
+```
+
+Sebelum push ke Vercel, impor dulu: situs tidak lagi membaca karya dari file, jadi tanpa data di Sanity halaman `/work` kosong.
+
+Webhook rebuild: Vercel → Settings → Git → **Deploy Hooks** → buat hook (branch `main`) → salin URL. Sanity (sanity.io/manage → API → **Webhooks**) → Create: URL = URL hook tadi, dataset `production`, trigger Create/Update/Delete, filter `_type == "work"`, method POST, projection kosong.
 
 ### Fase 5 — Form kontak
 Butuh: keputusan backend form.
@@ -103,7 +118,7 @@ Dibandingkan dengan Framer di 390, 430, 600, 767px (292 teks: lebar, posisi, uku
 
 ## Temuan konten (butuh keputusan klien)
 
-- **Semua tombol "Live Preview" mengarah ke WhatsApp** (`wa.me/6282141519450`), kemungkinan link sementara yang lupa diganti. Di `nesti` tombolnya tidak ada.
+- **Link Live Preview sudah diganti** dengan link asli dari dokumen klien (Formulatrix, Torico, KitaLulus → Behance/Framer; Tokopedia Official Store → file Google Drive; Grief → Framer). Tokopedia S.O.S Promo sengaja tanpa link, jadi tombolnya tidak tampil. Link Google Drive harus disetel "siapa saja dengan link" agar bisa dibuka pengunjung.
 - **Privacy Policy & Terms of Service = template bawaan Framer** (bahasa Inggris, menyebut "Pulma", tanggal 9 April 2026), bukan teks SriRona. Disalin apa adanya; sebaiknya diganti sebelum rilis.
 - Halaman 404 dan form kontak masih berbahasa Inggris ("This page isn’t here.", "Enter your name", "Submit"). Tombol "Back to Home" di Framer mengarah ke WhatsApp; di sini diarahkan ke `/`.
 - Tanggal karya ganjil ("Dec 1, 2019", "Jan 1, 2019"…), tampaknya placeholder.
@@ -134,7 +149,7 @@ Dibandingkan dengan Framer di 390, 430, 600, 767px (292 teks: lebar, posisi, uku
 
 Semua 6 karya tampil di `/work` (Framer memuat 2 terakhir belakangan lewat scroll, bukan menyembunyikannya). Tidak perlu toggle "tampil".
 
-Field CMS: judul, slug, ringkasan (opsional), penulis, tanggal, link Live Preview (opsional), cover, isi (rich text: paragraf, tebal, miring; gambar galeri). Urutan = urutan di daftar. "Explore more" = dua karya pertama selain karya yang sedang dibuka.
+Field CMS: judul, slug, urutan (angka), gambar utama, ringkasan (opsional), penulis/tim, tanggal, link Live Preview (opsional), isi Overview (paragraf, tebal, miring, link), galeri gambar. Slug lama dipertahankan (`saski`, `tasya`, …) sehingga URL tidak berubah. "Explore more" = dua karya pertama selain karya yang sedang dibuka.
 
 ## Design system
 

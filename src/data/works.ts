@@ -1,43 +1,59 @@
-import raw from './works.json';
+import { createClient } from '@sanity/client';
+import { SANITY_DATASET, SANITY_PROJECT_ID } from '../consts';
+import { blocksToHtml } from '../lib/portable';
 
-const images = import.meta.glob<{ default: ImageMetadata }>('../assets/framer/*.{png,jpg,jpeg,webp}', { eager: true });
-
-const decode = (text: string) =>
-	text.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
-
-const image = (file: string) => {
-	const found = images[`../assets/framer/${file}`];
-	if (!found) throw new Error(`Missing image: ${file}`);
-	return found.default;
-};
+export interface Img {
+	src: string;
+	width: number;
+	height: number;
+	alt: string;
+}
 
 export interface Work {
 	slug: string;
 	title: string;
-	/** May contain <strong>/<em>. */
 	summary?: string;
-	summaryText?: string;
 	author: string;
+	/** Display form, e.g. "Dec 1, 2019". */
 	date: string;
 	livePreview?: string;
-	cover: ImageMetadata;
-	/** Overview copy: the first block is the section heading. */
-	blocks: { heading: boolean; html: string }[];
-	gallery: ImageMetadata[];
+	cover: Img;
+	/** Overview paragraphs as HTML (strong, em, links). */
+	paragraphs: string[];
+	gallery: Img[];
 }
 
-export const works: Work[] = raw.map((w) => ({
-	slug: w.slug,
-	title: w.title.trim(),
-	summary: w.summary ?? undefined,
-	summaryText: w.summary && decode(w.summary.replace(/<[^>]+>/g, '')),
-	author: w.author,
-	date: w.date,
-	livePreview: w.livePreview ?? undefined,
-	cover: image(w.cover),
-	blocks: w.detailBlocks.map((b) => ({ heading: b.style === 'jzbuj3', html: b.html })),
-	gallery: w.gallery.map(image),
-}));
+// useCdn is off so a build triggered by a publish never reads stale content.
+const client = createClient({ projectId: SANITY_PROJECT_ID, dataset: SANITY_DATASET, apiVersion: '2025-01-01', useCdn: false });
+
+const image = `{ "src": asset->url, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height, alt }`;
+const query = `*[_type == "work" && defined(slug.current) && defined(cover.asset)] | order(order asc, _createdAt asc) {
+	"slug": slug.current, title, summary, author, date, livePreview,
+	"cover": cover${image}, body, "gallery": gallery[defined(asset)]${image}
+}`;
+
+const formatDate = (iso: string) =>
+	new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+const img = (raw: { src: string; width: number; height: number; alt?: string }): Img => ({ ...raw, alt: raw.alt ?? '' });
+
+async function fetchWorks(): Promise<Work[]> {
+	const rows = await client.fetch<any[]>(query);
+	return rows.map((w) => ({
+		slug: w.slug,
+		title: w.title.trim(),
+		summary: w.summary?.trim() || undefined,
+		author: w.author,
+		date: formatDate(w.date),
+		livePreview: w.livePreview || undefined,
+		cover: img(w.cover),
+		paragraphs: blocksToHtml(w.body),
+		gallery: (w.gallery ?? []).map(img),
+	}));
+}
+
+// One request per build; in dev every page load re-reads, so edits show up on refresh.
+let cached: Promise<Work[]> | undefined;
+export const getWorks = () => (import.meta.env.PROD ? (cached ??= fetchWorks()) : fetchWorks());
 
 /** "Explore more": the first two works other than this one. */
-export const moreWorks = (slug: string) => works.filter((w) => w.slug !== slug).slice(0, 2);
+export const moreWorks = (works: Work[], slug: string) => works.filter((w) => w.slug !== slug).slice(0, 2);

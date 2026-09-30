@@ -11,7 +11,14 @@ const { work } = Astro.props;
 
 <a class="card" href={`/work/${work.slug}`}>
 	<span class="media">
-		<Image src={work.cover} alt="" widths={[560, 1120, 1680]} sizes="(min-width: 1200px) 552px, (min-width: 810px) 730px, 350px" />
+		<Image
+			src={work.cover.src}
+			width={work.cover.width}
+			height={work.cover.height}
+			alt={work.cover.alt}
+			widths={[560, 1120, 1680]}
+			sizes="(min-width: 1200px) 552px, (min-width: 810px) 730px, 350px"
+		/>
 	</span>
 	<span class="pill t-subtitle-m">
 		<Crown aria-hidden="true" />

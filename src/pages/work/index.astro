@@ -1,0 +1,85 @@
+---
+import WorkCard from '../../components/WorkCard.astro';
+import { works } from '../../data/works';
+import Base from '../../layouts/Base.astro';
+
+const intro = 'Karya masing-masing dari kami yang membuat kami bangga dalam proses dan pengerjaannya.';
+---
+
+<Base title="Karya" description={intro}>
+	<div class="page">
+		<header>
+			<h1>
+				<span class="t-h1b" data-appear>Karya</span>
+				<span class="t-h1 accent" data-appear style="--appear-delay: 0.2s">Kami.</span>
+			</h1>
+			<p class="t-body-m" data-appear style="--appear-delay: 0.4s">{intro}</p>
+		</header>
+		<ul class="grid">
+			{
+				works.map((work) => (
+					<li>
+						<WorkCard work={work} />
+					</li>
+				))
+			}
+		</ul>
+	</div>
+</Base>
+
+<style>
+	.page {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 60px;
+		max-width: 1120px;
+		margin: 0 auto;
+		padding: 140px 0 100px;
+	}
+	header {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 8px;
+		width: 100%;
+		max-width: 500px;
+	}
+	h1 {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 4px 12px;
+	}
+	.accent {
+		color: var(--primary-04);
+	}
+	header p {
+		max-width: 350px;
+		text-align: center;
+		text-wrap: balance;
+	}
+	.grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 16px;
+		width: 100%;
+	}
+
+	@media (max-width: 1199px) {
+		.page {
+			max-width: 1200px; /* 1120px content + 2 × 40px padding */
+			padding: 140px 40px 100px;
+		}
+		.grid {
+			grid-template-columns: 1fr;
+			gap: 24px;
+		}
+	}
+	@media (max-width: 809px) {
+		.page {
+			gap: 40px;
+			padding: 100px 20px 108px;
+		}
+	}
+</style>

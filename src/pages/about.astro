@@ -1,0 +1,366 @@
+---
+import { Image } from 'astro:assets';
+import Chip from '../components/Chip.astro';
+import CtaBar from '../components/CtaBar.astro';
+import { principles } from '../data/principles';
+import { team } from '../data/team';
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="Tentang Kami" description="Studio kreatif kolektif dari Bandung, Tangerang, dan Yogyakarta. Kenali tim dan prinsip desain SriRona.">
+	<section class="hero">
+		<div class="hero-inner">
+			<h1 class="t-h1b">
+				{['Kolaborasi', 'lintas', 'disiplin', 'kreatif,', 'hadirkan desain'].map((words) => <><span>{words}</span> </>)}
+				<span class="accent t-h1 from-tablet">yang intuitif.</span>
+				<span class="accent t-h1 phone-only">dalam alur kerjamu.</span>
+			</h1>
+			<p class="t-body-m">
+				Kami menggabungkan berbagai keahlian kreatif untuk memahami konteks organisasimu, menjawab kebutuhan pengguna, dan merancang
+				solusi yang tepat guna.
+			</p>
+		</div>
+	</section>
+
+	<div class="body">
+		<section class="about">
+			<Chip>Tentang Kami</Chip>
+			<h2 class="t-h2">Salam Kenal dari SriRona!</h2>
+			<div class="copy">
+				<p>
+					Kami adalah studio kreatif kolektif yang tumbuh dari rasa ingin tahu serta pengalaman di ranah desain dan komunikasi
+					strategis. Kami percaya bahwa produk digital terbaik tidak hanya mengandalkan teknologi untuk mencapai tujuan, tetapi juga
+					harus mampu menyentuh sisi manusiawi penggunanya.
+				</p>
+				<p>
+					Tim inti kami memang ramping. Namun, kami bersinergi dengan para spesialis lintas industri—seperti developer, researcher,
+					ilustrator, dan penulis terpercaya. Karena bagi kami, solusi terbaik lahir dari pertukaran pikiran yang terbuka, bukan dari
+					satu meja kerja yang kaku.
+				</p>
+				<p>
+					Bekerja secara remote dari Bandung, Tangerang, dan Yogyakarta, kami membuka ruang kerja sama bagi para pendiri bisnis,
+					marketer, maupun organisasi yang sedang merintis hal baru, mengembangkan bisnis, atau sekadar mencari arah. Mari luangkan
+					waktu untuk mengobrol santai seputar produk dan desain. <strong>Tanpa tuntutan, tanpa tekanan</strong>.
+				</p>
+			</div>
+		</section>
+
+		<section class="block">
+			<div class="block-head">
+				<Chip>Pandangan Kami</Chip>
+				<h2 class="t-h2">Prinsip Desain</h2>
+			</div>
+			<ul class="values">
+				{
+					principles.map(({ title, text, tag, icon: Icon, background, accent }) => (
+						<li style={`background: ${background}; --accent: ${accent}`}>
+							<div class="value-body">
+								<span class="value-icon">
+									<Icon aria-hidden="true" />
+								</span>
+								<div>
+									<h3 class="t-subtitle-m">{title}</h3>
+									<p>{text}</p>
+								</div>
+							</div>
+							<span class="tag">{tag}</span>
+						</li>
+					))
+				}
+			</ul>
+		</section>
+
+		<section class="block">
+			<div class="block-head">
+				<Chip>Tim Kami</Chip>
+				<h2 class="t-h2">
+					<span class="line-1">Tim kecil, semangat besar.</span>
+					<span class="line-2">Berkreasi dengan intensi dan atensi.</span>
+				</h2>
+			</div>
+			<div class="team-wrap">
+				<ul class="team">
+					{
+						team.map(({ name, role, photo }) => (
+							<li>
+								<Image src={photo} alt="" widths={[400, 800, 1200]} sizes="(min-width: 1200px) 363px, (min-width: 810px) 50vw, 100vw" />
+								<div class="member">
+									<h3 class="t-subtitle-m">{name}</h3>
+									<p class="t-body-s">{role}</p>
+								</div>
+							</li>
+						))
+					}
+				</ul>
+				<CtaBar title="Butuh diskusikan proyek kreatifmu?" text="Kami bantu, dari brainstorming s.d. eksekusi." />
+			</div>
+		</section>
+	</div>
+</Base>
+
+<style>
+	.hero {
+		display: flex;
+		justify-content: center;
+		padding: 140px 12px 100px;
+	}
+	.hero-inner {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 12px;
+		width: 100%;
+		max-width: 600px;
+		height: 400px;
+	}
+	/* Words are flex items with a 12px gap, as in Framer, so lines break at the same places. */
+	h1 {
+		display: flex;
+		flex-wrap: wrap;
+		align-content: center;
+		justify-content: center;
+		gap: 0 12px;
+		height: 310px;
+		overflow: clip;
+	}
+	.accent {
+		flex-basis: 100%;
+		text-align: center;
+		color: var(--primary-04);
+	}
+	/* Framer uses different closing copy on phones. */
+	.phone-only {
+		display: none;
+	}
+	.hero p {
+		max-width: 450px;
+		text-align: center;
+	}
+
+	.body {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 200px;
+		max-width: 1120px;
+		margin: 0 auto;
+		padding: 100px 0 138px;
+		--chip-bg: var(--primary-02);
+	}
+	.about {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 24px;
+		width: 100%;
+		max-width: 600px;
+	}
+	.about h2 {
+		text-wrap: balance;
+	}
+	.copy {
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+		margin-top: 16px;
+	}
+
+	.block {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 60px;
+		width: 100%;
+	}
+	.block-head {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 24px;
+		text-align: center;
+	}
+	.block-head h2 span {
+		display: block;
+		margin-inline: auto;
+		text-wrap: balance;
+	}
+	.block-head h2 span + span {
+		margin-top: 6px;
+	}
+
+	.values {
+		display: flex;
+		gap: 16px;
+		width: 100%;
+	}
+	.values li {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: flex-end;
+		justify-content: space-between;
+		aspect-ratio: 0.794565;
+		padding: 32px;
+		border-radius: 24px;
+		box-shadow:
+			0 0.6px 0.6px -1.25px rgb(0 0 0 / 0.18),
+			0 2.29px 2.29px -2.5px rgb(0 0 0 / 0.16),
+			0 10px 10px -3.75px rgb(0 0 0 / 0.06);
+	}
+	.value-body {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 40px;
+		width: 100%;
+	}
+	.value-body p {
+		margin-top: 12px;
+		text-wrap: balance;
+	}
+	.value-icon {
+		display: grid;
+		place-items: center;
+		width: 48px;
+		height: 48px;
+		border-radius: 50%;
+		background: var(--neutral-01);
+		color: var(--accent);
+		box-shadow:
+			0 0.3px 0.3px -1.25px rgb(0 0 0 / 0.18),
+			0 1.14px 1.14px -2.5px rgb(0 0 0 / 0.16),
+			0 5px 5px -3.75px rgb(0 0 0 / 0.06);
+	}
+	.value-icon :global(svg) {
+		width: 24px;
+		height: 24px;
+	}
+
+	.team-wrap {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 40px;
+		width: 100%;
+	}
+	.team {
+		display: flex;
+		gap: 16px;
+		width: 100%;
+	}
+	.team li {
+		position: relative;
+		flex: 1;
+		aspect-ratio: 0.713158;
+		border-radius: 24px;
+		overflow: clip;
+	}
+	.team :global(img) {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+	.team li::after {
+		content: '';
+		position: absolute;
+		inset: auto 0 0;
+		height: 120px;
+		background: linear-gradient(180deg, rgb(32 32 32 / 0), var(--neutral-08));
+	}
+	.member {
+		position: absolute;
+		inset: auto 24px 24px;
+		z-index: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+	.member h3 {
+		color: var(--neutral-01);
+	}
+	.member p {
+		color: var(--neutral-05);
+	}
+
+
+	@media (max-width: 1199px) {
+		.hero {
+			padding: 140px 40px 100px;
+		}
+		.body {
+			max-width: 1200px; /* 1120px content + 2 × 40px padding */
+			padding: 100px 40px 138px;
+		}
+		.values {
+			flex-direction: column;
+			gap: 24px;
+			max-width: 600px;
+		}
+		.values li {
+			flex: none;
+			aspect-ratio: 1.66667;
+		}
+		/* Framer narrows these two lines so each wraps in two. */
+		.line-1 {
+			max-width: 360px;
+		}
+		.line-2 {
+			max-width: 624px;
+		}
+		.team {
+			display: grid;
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (max-width: 809px) {
+		.hero {
+			padding: 100px 20px 60px;
+		}
+		.hero-inner {
+			gap: 16px;
+		}
+		.from-tablet {
+			display: none;
+		}
+		.phone-only {
+			display: block;
+		}
+		.hero p {
+			width: min(350px, 100%);
+			max-width: none;
+			font-size: 14px;
+		}
+		.body {
+			gap: 120px;
+			padding: 60px 20px 108px;
+		}
+		.block {
+			gap: 40px;
+		}
+		.values li {
+			aspect-ratio: 0.972222;
+			padding: 24px;
+		}
+		.line-1 {
+			max-width: 234px;
+		}
+		.line-2 {
+			max-width: 228px;
+		}
+		.team-wrap {
+			gap: 24px;
+		}
+		.team {
+			display: flex;
+			flex-direction: column;
+			gap: 24px;
+		}
+		.team li {
+			flex: none;
+		}
+	}
+</style>

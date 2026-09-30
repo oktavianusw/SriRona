@@ -1,0 +1,390 @@
+---
+import { Image } from 'astro:assets';
+import Button from '../Button.astro';
+import Chip from '../Chip.astro';
+import { EMAIL_URL } from '../../consts';
+import Article from '../../icons/article.svg';
+import Code from '../../icons/code.svg';
+import Desktop from '../../icons/desktop.svg';
+import PaintBrush from '../../icons/paint-brush.svg';
+import productImage from '../../assets/framer/qtsirRyhQ2WXZYzqmQXtvwceUU.png';
+import brandingImage from '../../assets/framer/rXQyZ5gfkFbYFK2aelAPoXDGcEU.jpeg';
+import writingImage from '../../assets/framer/sUSIZmAbSqSCVq6tqegHSC8.jpeg';
+import developerImage from '../../assets/framer/jvZC46OwhaiipwvoYHKJt1Jd6k.jpeg';
+
+const services = [
+	{
+		tab: 'Digital Product Design',
+		icon: Desktop,
+		title: 'Digital Product Design.',
+		text: 'Ciptakan pengalaman digital yang relevan dan ramah pengguna, menjembatani kebutuhan manusia dengan pertumbuhan bisnis/organisasimu.',
+		tags: ['Mobile-app', 'Web-app', 'Desktop-app', '+more'],
+		image: productImage,
+	},
+	{
+		tab: 'Branding Design',
+		icon: PaintBrush,
+		title: 'Branding Design.',
+		text: 'Terjemahkan strategi bisnis/organisasimu menjadi identitas visual yang autentik, memikat, dan mendorong pertumbuhan.',
+		tags: ['Graphic design', 'Content design', 'Illustration', '+more'],
+		// Framer's tablet/phone copy differs from desktop here.
+		mobileTags: ['Branding design', 'Content design', 'Illustration', '+more'],
+		image: brandingImage,
+	},
+	{
+		tab: 'UX & Content Writing',
+		icon: Article,
+		title: 'UX, Content, & Copywriting.',
+		text: 'Merajut komunikasi yang jernih untuk menuntun pengguna dengan mudah. Menyusun narasi kreatif yang kuat untuk memikat & membangun kepercayaan audiens terhadap organisasimu.',
+		tags: ['UX writing', 'Content writing', 'Copywriting', '+more'],
+		mobileTags: ['UX Writing', 'Content Writing', 'Copywriitng'],
+		image: writingImage,
+	},
+	{
+		tab: 'Developer Partner',
+		icon: Code,
+		title: 'Dedicated Developer Partner.',
+		text: 'Kami bekerja sama dengan partner developer terpercaya untuk percepat pengembangan produk digitalmu lewat kolaborasi yang transparan dan eksekusi konsiten.',
+		tags: ['Front-end', 'Custom components', 'CMS intergration', 'Performance'],
+		image: developerImage,
+	},
+];
+
+const logoFiles = import.meta.glob<{ default: ImageMetadata }>('../../assets/framer/*.png', { eager: true });
+const logos = [
+	'4BQZ5MMvO8jxaPOHgbQTkiIplYc',
+	'zS0Y4ltoCoxKVTDgfVaSNkXhJD8',
+	'JH25Bp7Ct6kFFBga0AGOMoV3M',
+	'DlavhqDJRqw9fmmZEe0IoShcc0',
+	'tdm4NPXJDA3xouvi8TzLIPSAM',
+	'DEdz6HuMTkGePWqUKg1XWU1xNd4',
+	'btId30zsMbWqE9aQHg7JVpVw',
+].map((id) => logoFiles[`../../assets/framer/${id}.png`].default);
+---
+
+<section class="services">
+	<div class="card">
+		<div class="content">
+			<header>
+				<div class="headline">
+					<Chip>Layanan</Chip>
+					<h2 class="t-h2">Solusi Kreatif Menyeluruh, Dirancang untuk Tiap Kebutuhan Berbeda</h2>
+				</div>
+				<p class="lead t-body-m">
+					Ribet harus pindah-pindah vendor untuk penuhi kebutuhan kreatifmu? Kini tak perlu lagi. Kami hadir dengan layanan kreatif
+					lintas disiplin di satu tempat, yang bisa kamu pilih sesuai kebutuhan. <strong>Efisien waktu, tenaga, & biaya.</strong>
+				</p>
+			</header>
+
+			<div class="widget">
+				<div class="sidenav">
+					<div class="tabs" role="tablist" aria-label="Layanan">
+						{
+							services.map(({ tab, icon: Icon }, i) => (
+								<button class:list={['tab', 't-body-s-strong', { active: i === 0 }]} type="button" role="tab" aria-selected={i === 0} aria-controls={`service-${i}`}>
+									<Icon aria-hidden="true" />
+									{tab}
+								</button>
+							))
+						}
+					</div>
+					<ul class="logos" aria-hidden="true">
+						{
+							logos.map((logo) => (
+								<li>
+									<Image src={logo} alt="" width={58} height={58} />
+								</li>
+							))
+						}
+						<li class="t-body-s-strong">+9</li>
+					</ul>
+				</div>
+				<div class="panels">
+					{
+						services.map(({ title, text, tags, mobileTags = tags, image }, i) => (
+							<article class:list={['panel', { active: i === 0 }]} id={`service-${i}`} role="tabpanel">
+								<div class="details">
+									<h3 class="t-subtitle-m">{title}</h3>
+									<p class="t-body-m">{text}</p>
+									<ul class="tags desktop-tags">
+										{tags.map((tag) => (
+											<li class="tag">{tag}</li>
+										))}
+									</ul>
+									<ul class="tags mobile-tags">
+										{mobileTags.map((tag) => (
+											<li class="tag">{tag}</li>
+										))}
+									</ul>
+								</div>
+								<Image class="panel-image" src={image} alt="" widths={[640, 960, 1280, 1752]} sizes="(min-width: 1200px) 876px, 100vw" />
+							</article>
+						))
+					}
+				</div>
+			</div>
+
+			<Button href={EMAIL_URL} label="Diskusikan sekarang" size="lg" />
+		</div>
+	</div>
+</section>
+
+<script>
+	const widget = document.querySelector('.services .widget')!;
+	const tabs = [...widget.querySelectorAll<HTMLButtonElement>('.tab')];
+	const panels = [...widget.querySelectorAll('.panel')];
+	tabs.forEach((tab, i) =>
+		tab.addEventListener('click', () => {
+			tabs.forEach((t, j) => {
+				t.classList.toggle('active', i === j);
+				t.setAttribute('aria-selected', String(i === j));
+				panels[j].classList.toggle('active', i === j);
+			});
+		}),
+	);
+</script>
+
+<style>
+	.services {
+		padding: 0 12px;
+	}
+	.card {
+		display: flex;
+		justify-content: center;
+		padding: 100px 0;
+		border-radius: 40px;
+		background: var(--primary-02);
+	}
+	.content {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 60px;
+		width: 100%;
+		max-width: 1120px;
+	}
+	header {
+		display: flex;
+		align-items: flex-end;
+		justify-content: space-between;
+		width: 100%;
+	}
+	.headline {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 24px;
+		max-width: 600px;
+	}
+	.lead {
+		max-width: 350px;
+	}
+
+	.widget {
+		width: 100%;
+	}
+	.tabs {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		padding: 8px;
+	}
+	.tab {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		padding: 8px 12px;
+		border-radius: 8px;
+		text-align: left;
+		transition:
+			background-color 0.3s,
+			box-shadow 0.3s,
+			color 0.3s;
+	}
+	.tab.active {
+		background: var(--neutral-01);
+		color: var(--neutral-08);
+		box-shadow:
+			0 0.3px 0.3px -1.25px rgb(0 0 0 / 0.14),
+			0 1.14px 1.14px -2.5px rgb(0 0 0 / 0.12),
+			0 5px 5px -3.75px rgb(0 0 0 / 0.05);
+	}
+	.tab :global(svg) {
+		flex: none;
+		width: 16px;
+		height: 16px;
+	}
+	.logos {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 8px;
+		padding: 8px;
+	}
+	.logos li {
+		display: grid;
+		place-items: center;
+		aspect-ratio: 1;
+		padding: 8px;
+		border-radius: 8px;
+		background: var(--neutral-01);
+		box-shadow:
+			0 0.3px 0.3px -1.25px rgb(0 0 0 / 0.11),
+			0 1.14px 1.14px -2.5px rgb(0 0 0 / 0.1),
+			0 5px 5px -3.75px rgb(0 0 0 / 0.04);
+	}
+
+	.logos :global(img) {
+		width: 100%;
+		height: auto;
+	}
+
+	.details {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		padding: 16px 0 0 24px;
+	}
+	.details h3 {
+		max-width: 500px;
+	}
+	.details p {
+		max-width: 90%;
+		text-wrap: balance;
+	}
+	.tags.mobile-tags {
+		display: none;
+	}
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+		margin-top: 4px;
+	}
+	.panel-image {
+		width: 100%;
+		height: auto;
+		aspect-ratio: 1.59273;
+		border-radius: 16px;
+		object-fit: cover;
+	}
+
+	/* Desktop: one card with a side nav; panels stack in one grid cell and cross-fade. */
+	@media (min-width: 1200px) {
+		.widget {
+			display: flex;
+			gap: 8px;
+			padding: 8px;
+			border-radius: 24px;
+			background: var(--neutral-01);
+			/* The 1px border is an inset shadow so it takes no space, as in Framer. */
+			box-shadow:
+				inset 0 0 0 1px var(--neutral-03),
+				0 0.6px 0.6px -1.25px rgb(0 0 0 / 0.18),
+				0 2.29px 2.29px -2.5px rgb(0 0 0 / 0.16),
+				0 10px 10px -3.75px rgb(0 0 0 / 0.06);
+		}
+		.sidenav {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			width: 220px;
+			border-radius: 16px;
+			background: var(--neutral-02);
+		}
+		.panels {
+			flex: 1;
+			display: grid;
+		}
+		.panel {
+			grid-area: 1 / 1;
+			opacity: 0;
+			visibility: hidden;
+			transition:
+				opacity 0.3s,
+				visibility 0.3s;
+		}
+		.panel.active {
+			opacity: 1;
+			visibility: visible;
+		}
+		.details {
+			max-width: 800px;
+			height: 145px;
+			margin-bottom: 24px;
+		}
+	}
+
+	/* Tablet and phone: no side nav, every service is its own card. */
+	@media (max-width: 1199px) {
+		.tags.desktop-tags {
+			display: none;
+		}
+		.tags.mobile-tags {
+			display: flex;
+		}
+		.card {
+			padding: 100px 28px;
+		}
+		header {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 24px;
+		}
+		.lead {
+			max-width: 450px;
+			text-wrap: balance;
+		}
+		.sidenav {
+			display: none;
+		}
+		.panels {
+			display: flex;
+			flex-direction: column;
+			gap: 24px;
+		}
+		.panel {
+			display: flex;
+			flex-direction: column;
+			gap: 24px;
+			padding: 8px;
+			border-radius: 24px;
+			background: var(--neutral-01);
+			/* The 1px border is an inset shadow so it takes no space, as in Framer. */
+			box-shadow:
+				inset 0 0 0 1px var(--neutral-03),
+				0 0.6px 0.6px -1.25px rgb(0 0 0 / 0.18),
+				0 2.29px 2.29px -2.5px rgb(0 0 0 / 0.16),
+				0 10px 10px -3.75px rgb(0 0 0 / 0.06);
+		}
+	}
+
+	@media (max-width: 809px) {
+		.services {
+			padding: 0;
+		}
+		.card {
+			padding: 40px 20px;
+			border-radius: 24px;
+		}
+		.content {
+			gap: 40px;
+		}
+		.headline h2 {
+			text-wrap: balance;
+		}
+		.lead {
+			max-width: none;
+			text-wrap: wrap;
+		}
+		.details {
+			padding: 16px 16px 0;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.tab,
+		.panel {
+			transition: none;
+		}
+	}
+</style>

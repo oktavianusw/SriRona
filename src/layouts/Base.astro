@@ -1,0 +1,59 @@
+---
+import '../styles/fonts.css';
+import '../styles/global.css';
+import Footer from '../components/Footer.astro';
+import Nav from '../components/Nav.astro';
+import { SITE_DESCRIPTION, SITE_NAME } from '../consts';
+import ogImage from '../assets/framer/2X9s7JWtP5OpV9ZS27qs4v1Bk.png';
+
+interface Props {
+	title?: string;
+	description?: string;
+}
+const { title, description = SITE_DESCRIPTION } = Astro.props;
+const fullTitle = title ? `${title} — ${SITE_NAME}` : SITE_NAME;
+const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefined;
+---
+
+<!doctype html>
+<html lang="id">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" type="image/png" href="/favicon.png" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		<title>{fullTitle}</title>
+		<meta name="description" content={description} />
+		{canonical && <link rel="canonical" href={canonical} />}
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content={fullTitle} />
+		<meta property="og:description" content={description} />
+		{Astro.site && <meta property="og:image" content={new URL(ogImage.src, Astro.site)} />}
+		<meta name="twitter:card" content="summary_large_image" />
+	</head>
+	<body>
+		<Nav />
+		<main>
+			<slot />
+		</main>
+		<Footer />
+		<script>
+			import Lenis from 'lenis';
+			import 'lenis/dist/lenis.css';
+
+			// Same setup as the Framer site: smooth wheel only, touch scrolling stays native.
+			if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+				new Lenis({ autoRaf: true, anchors: true });
+			}
+
+			const observer = new IntersectionObserver((entries) => {
+				for (const entry of entries) {
+					if (!entry.isIntersecting) continue;
+					entry.target.classList.add('is-in');
+					observer.unobserve(entry.target);
+				}
+			});
+			document.querySelectorAll('[data-appear]').forEach((el) => observer.observe(el));
+		</script>
+	</body>
+</html>

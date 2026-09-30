@@ -1,0 +1,36 @@
+<section class="intro">
+	<h2 class="t-h2">
+		<strong>Pikiran, rasa, dan kehendak</strong> adalah kompas kami dalam melahirkan solusi kreatif yang berdampak untuk organisasimu.
+		Memadukan fungsi, estetika, dan interaksi yang manusiawi.
+	</h2>
+</section>
+
+<style>
+	.intro {
+		display: flex;
+		justify-content: center;
+		padding: 150px 12px;
+	}
+	h2 {
+		max-width: 1096px;
+		text-align: center;
+		text-wrap: balance;
+	}
+
+	@media (max-width: 1199px) {
+		.intro {
+			padding: 150px 40px;
+		}
+	}
+
+	@media (max-width: 809px) {
+		.intro {
+			padding: 120px 20px 150px;
+		}
+		/* Framer fixes this column at 350px (390 design width − 2 × 20). */
+		h2 {
+			flex: none;
+			width: min(350px, 100%);
+		}
+	}
+</style>

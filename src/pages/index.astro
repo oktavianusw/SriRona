@@ -1,17 +1,23 @@
 ---
-
+import Hero from '../components/home/Hero.astro';
+import Intro from '../components/home/Intro.astro';
+import Principles from '../components/home/Principles.astro';
+import Services from '../components/home/Services.astro';
+import Team from '../components/home/Team.astro';
+import Base from '../layouts/Base.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Base>
+	<Hero />
+	<Intro />
+	<Principles />
+	<Services />
+	<Team />
+</Base>
+
+<style is:global>
+	/* Only the home page uses this slightly cooler cream; other pages use --primary-01. */
+	main {
+		background: #fcfbf7;
+	}
+</style>

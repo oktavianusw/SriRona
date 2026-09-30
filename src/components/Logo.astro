@@ -1,0 +1,22 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/framer/4CNi0AkVYPXeSggbBGzQnKRpMNc.png';
+
+interface Props {
+	class?: string;
+}
+---
+
+<a class:list={['logo', Astro.props.class]} href="/#hero" aria-label="SriRona — beranda">
+	<Image src={logo} alt="" width={24} height={24} densities={[1, 2, 3]} />
+	<span class="t-subtitle-m">SriRona</span>
+</a>
+
+<style>
+	.logo {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		white-space: pre;
+	}
+</style>

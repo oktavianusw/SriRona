@@ -1,0 +1,120 @@
+---
+import legal from '../../data/legal.json';
+import Base from '../../layouts/Base.astro';
+
+export function getStaticPaths() {
+	return Object.entries(legal).map(([slug, page]) => ({ params: { slug }, props: { page } }));
+}
+
+const { page } = Astro.props;
+---
+
+<Base title={page.title} description={`${page.title} Studio SriRona.`}>
+	<div class="page">
+		<header>
+			<h1 class="t-h1b" data-appear>{page.title}</h1>
+			<p class="updated t-body-s">
+				<span>Last updated at</span>
+				<time datetime={page.datetime}>{page.updated}</time>
+			</p>
+		</header>
+		<div class="outer">
+			<div class="paper">
+				<div class="prose" set:html={page.html} />
+			</div>
+		</div>
+	</div>
+</Base>
+
+<style>
+	.page {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 60px;
+		max-width: 800px;
+		margin: 0 auto;
+		padding: 140px 0 138px;
+	}
+	header {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 12px;
+		width: 100%;
+	}
+	h1 {
+		text-align: center;
+	}
+	.updated {
+		display: flex;
+		gap: 5px;
+	}
+	.outer {
+		width: 100%;
+		padding: 12px;
+		border-radius: 40px;
+		background: var(--primary-02);
+	}
+	.paper {
+		padding: 40px;
+		border-radius: 28px;
+		background: var(--neutral-01);
+		box-shadow:
+			inset 0 0 0 1px var(--primary-03),
+			0 0.6px 0.6px -1.25px rgb(0 0 0 / 0.18),
+			0 2.29px 2.29px -2.5px rgb(0 0 0 / 0.16),
+			0 10px 10px -3.75px rgb(0 0 0 / 0.06);
+	}
+	.prose :global(h3) {
+		font: 500 24px/1.2 var(--font-display);
+		letter-spacing: -0.02em;
+		color: var(--neutral-08);
+	}
+	.prose :global(p),
+	.prose :global(li) {
+		font-size: 16px;
+	}
+	.prose :global(* + h3) {
+		margin-top: 40px;
+	}
+	.prose :global(* + p) {
+		margin-top: 20px;
+	}
+	.prose :global(* + ul) {
+		margin-top: 12px;
+	}
+	.prose :global(li) {
+		position: relative;
+		padding-inline-start: 2ch;
+	}
+	.prose :global(li::before) {
+		content: '•';
+		position: absolute;
+		inset-inline-start: 0;
+	}
+
+	@media (max-width: 1199px) {
+		.page {
+			max-width: 880px; /* 800px content + 2 × 40px padding */
+			padding: 140px 40px 156px;
+		}
+	}
+	@media (max-width: 809px) {
+		.page {
+			gap: 40px;
+			padding: 100px 20px 108px;
+		}
+		.outer {
+			padding: 8px;
+			border-radius: 24px;
+		}
+		.paper {
+			padding: 20px;
+			border-radius: 16px;
+		}
+		.prose :global(h3) {
+			font-size: 22px;
+		}
+	}
+</style>

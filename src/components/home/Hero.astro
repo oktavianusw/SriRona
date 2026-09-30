@@ -1,0 +1,201 @@
+---
+import { Image } from 'astro:assets';
+import SunHorizon from '../../icons/sun-horizon.svg';
+import cardImage from '../../assets/framer/r5im6CLwcJCXTQgqTINZLUoM.jpeg';
+import videoMp4 from '../../assets/framer/MLWPbW1dUQawJLhhun3dBwpgJak.mp4';
+import videoWebm from '../../assets/framer/nmdRhWLNFqQ8e7XZGmy9kpXqo.webm';
+import { EMAIL_URL } from '../../consts';
+---
+
+<section class="hero" id="hero">
+	<div class="card">
+		<div class="media">
+			<video autoplay loop muted playsinline preload="auto">
+				<source src={videoWebm} type="video/webm" />
+				<source src={videoMp4} type="video/mp4" />
+			</video>
+		</div>
+		<div class="header" data-appear>
+			<p class="eyebrow t-body-s-strong">
+				<SunHorizon aria-hidden="true" />
+				Strategi brand. Komunikasi. Desain layanan digital
+			</p>
+			<h1 class="t-h1b">
+				{'Ciptakan solusi desain yang berdampak dan'.split(' ').map((word) => <><span>{word}</span> </>)}
+				<span class="accent t-h1">bermakna</span>
+			</h1>
+		</div>
+		<div class="bottom">
+			<p class="t-body-l">Hubungkan tujuan organisasimu dengan pengguna lewat kreativitas & empati.</p>
+			<a class="cta" href={EMAIL_URL}>
+				<span class="t-body-s-strong">Diskusikan sekarang</span>
+				<span class="cta-image">
+					<Image src={cardImage} alt="" width={472} loading="eager" />
+				</span>
+			</a>
+		</div>
+	</div>
+</section>
+
+<style>
+	.hero {
+		display: flex;
+		height: 100vh;
+		padding: var(--nav-height) 12px 12px;
+	}
+	.card {
+		position: relative;
+		flex: 1;
+		border-radius: 40px;
+		overflow: clip;
+	}
+	.media {
+		position: absolute;
+		inset: -2px 0 auto;
+		/* Framer fixes this at 730px, which leaves the card's bottom uncovered on tall desktop viewports. */
+		height: max(730px, 100% + 2px);
+		background: #ff7452;
+	}
+	.media::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background: #2020201a;
+	}
+	video {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+	.header {
+		position: absolute;
+		top: 80px;
+		left: 80px;
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+		width: 700px;
+		max-width: 700px;
+	}
+	.eyebrow {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		color: var(--neutral-04);
+	}
+	.eyebrow :global(svg) {
+		flex: none;
+		width: 20px;
+		height: 20px;
+		color: var(--primary-03);
+	}
+	/* Words are flex items with a 12px gap, as in Framer, so lines break at the same places. */
+	h1 {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0 12px;
+		color: var(--neutral-01);
+	}
+	.accent {
+		flex-basis: 100%;
+		margin-top: 10px;
+		color: var(--primary-03);
+	}
+	.bottom {
+		position: absolute;
+		inset: auto 80px 60px;
+		display: flex;
+		align-items: flex-end;
+		justify-content: space-between;
+	}
+	.bottom p {
+		width: 350px;
+		color: var(--neutral-01);
+	}
+	.cta {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		width: 240px;
+		padding: 6px;
+		border-radius: 20px;
+		background: var(--neutral-01);
+		box-shadow:
+			0 0.8px 0.8px -0.25px rgb(0 0 0 / 0.03),
+			0 2.4px 2.4px -0.5px rgb(0 0 0 / 0.04),
+			0 6.4px 6.4px -0.75px rgb(0 0 0 / 0.06),
+			0 20px 20px -1px rgb(0 0 0 / 0.12);
+	}
+	.cta > span:first-child {
+		padding: 2px 0 4px;
+		color: var(--neutral-08);
+		text-align: center;
+	}
+	.cta-image {
+		display: block;
+		position: relative;
+		aspect-ratio: 1.70588;
+		border-radius: 14px;
+		overflow: clip;
+	}
+	.cta-image :global(img) {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transform: scale(1.035, 1.03);
+		transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+	}
+	.cta:hover :global(img) {
+		transform: none;
+	}
+
+	@media (max-width: 1199px) {
+		.hero {
+			height: 80vh;
+		}
+		.header {
+			inset: 60px 40px auto;
+			width: auto;
+		}
+		.accent {
+			margin-top: 24px;
+		}
+		.bottom {
+			inset: auto 40px 40px;
+		}
+	}
+
+	@media (max-width: 809px) {
+		.card {
+			border-radius: 24px;
+		}
+		.header {
+			inset: 40px 20px auto;
+			gap: 20px;
+		}
+		.accent {
+			margin-top: 10px;
+		}
+		.eyebrow {
+			flex-direction: column;
+			align-items: flex-start;
+			text-wrap: balance;
+		}
+		.eyebrow :global(svg) {
+			width: 24px;
+			height: 24px;
+		}
+		.bottom {
+			inset: auto 20px 20px;
+		}
+		.bottom p {
+			width: 100%;
+			text-wrap: balance;
+		}
+		.cta {
+			display: none;
+		}
+	}
+</style>

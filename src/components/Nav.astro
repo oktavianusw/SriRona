@@ -1,0 +1,171 @@
+---
+import Button from './Button.astro';
+import Logo from './Logo.astro';
+import { EMAIL_URL } from '../consts';
+
+const links = [
+	{ href: '/work', label: 'Karya' },
+	{ href: '/about', label: 'Tentang kami' },
+	{ href: '/contact', label: 'Kontak' },
+];
+---
+
+<nav class="nav" aria-label="Utama">
+	<div class="bar">
+		<Logo class="nav-logo" />
+		<button class="toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
+			<span class="sr-only">Menu</span>
+			<span class="line"></span>
+			<span class="line"></span>
+		</button>
+	</div>
+	<div class="menu" id="nav-menu">
+		<div class="menu-inner">
+			<ul class="links">
+				{
+					links.map(({ href, label }) => (
+						<li>
+							<a class="link t-body-s" href={href}>
+								<span class="roll">
+									<span data-text={label}>{label}</span>
+								</span>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+			<Button href={EMAIL_URL} label="Diskusikan sekarang" size="sm" />
+		</div>
+	</div>
+</nav>
+
+<script>
+	const nav = document.querySelector('.nav')!;
+	const toggle = nav.querySelector<HTMLButtonElement>('.toggle')!;
+	toggle.addEventListener('click', () => {
+		const open = nav.classList.toggle('open');
+		toggle.setAttribute('aria-expanded', String(open));
+	});
+</script>
+
+<style>
+	.nav {
+		position: fixed;
+		inset: 0 0 auto;
+		z-index: 9;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 12px var(--gutter);
+		background: var(--primary-01);
+	}
+	.bar,
+	.menu-inner,
+	.links {
+		display: flex;
+		align-items: center;
+	}
+	.menu-inner {
+		gap: 32px;
+	}
+	.links {
+		gap: 20px;
+	}
+	.link {
+		display: block;
+		color: var(--neutral-08);
+	}
+	.link .roll {
+		height: 20px;
+	}
+	.toggle {
+		display: none;
+	}
+
+	@media (max-width: 1199px) {
+		.nav {
+			display: block;
+		}
+		.bar {
+			justify-content: space-between;
+		}
+		.toggle {
+			display: block;
+			position: relative;
+			width: 32px;
+			height: 32px;
+		}
+		.line {
+			position: absolute;
+			left: 4px;
+			width: 24px;
+			height: 2px;
+			border-radius: 100px;
+			background: var(--primary-04);
+			transition:
+				top 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+				transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+		}
+		.line:nth-of-type(2) {
+			top: 10px;
+		}
+		.line:nth-of-type(3) {
+			top: 20px;
+		}
+		.open .line {
+			top: 15px;
+		}
+		.open .line:nth-of-type(2) {
+			transform: rotate(45deg);
+		}
+		.open .line:nth-of-type(3) {
+			transform: rotate(-45deg);
+		}
+
+		/* Collapsed to zero height; grid rows animate the open/close. */
+		.menu {
+			display: grid;
+			grid-template-rows: 0fr;
+			visibility: hidden;
+			transition:
+				grid-template-rows 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+				visibility 0.35s;
+		}
+		.open .menu {
+			grid-template-rows: 1fr;
+			visibility: visible;
+		}
+		.menu-inner {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 24px;
+			min-height: 0;
+			overflow: clip;
+		}
+		.open .menu-inner {
+			overflow: visible;
+		}
+		.links {
+			flex-direction: column;
+			align-items: flex-start;
+			gap: 16px;
+			padding-top: 32px;
+		}
+		.menu-inner > :global(.button) {
+			margin-bottom: 28px;
+		}
+	}
+
+	@media (max-width: 809px) {
+		.nav :global(.nav-logo span) {
+			display: none;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.line,
+		.menu {
+			transition: none;
+		}
+	}
+</style>

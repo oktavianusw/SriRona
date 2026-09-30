@@ -1,0 +1,268 @@
+/* Tokens and text styles mirror the Framer project — names and values in DESIGN.md. */
+:root {
+	--neutral-01: #fff;
+	--neutral-02: #f9f9f9;
+	--neutral-03: #f0f0f0;
+	--neutral-04: #e8e8e8;
+	--neutral-05: #cecece;
+	--neutral-06: #bbb;
+	--neutral-07: #646464;
+	--neutral-08: #202020;
+	--neutral-08-20: #20202033;
+	--neutral-01-80: #fffc;
+
+	--primary-01: #fffcf5;
+	--primary-02: #fff4d6;
+	--primary-03: #ffdb73;
+	--primary-04: #431505;
+
+	--grey-blue-01: #dce9ef;
+	--grey-blue-02: #96bccf;
+	--grey-blue-03: #203946;
+	--blue-01: #cce0ff;
+	--blue-02: #66a2ff;
+	--blue-03: #002359;
+	--purple-01: #f6d5e4;
+	--purple-02: #e382af;
+	--purple-03: #621639;
+	--orange-01: #ffe629;
+	--orange-02: #473b1f;
+
+	--button-bg: #c9d2fd;
+	--button-text: #364152;
+
+	--font-sans: 'Manrope', sans-serif;
+	--font-serif: 'Lora', serif;
+	--font-display: 'Geist', sans-serif;
+
+	--ease: cubic-bezier(0.44, 0, 0.56, 1);
+	--gutter: 40px;
+	--nav-height: 62px;
+}
+
+@media (max-width: 809px) {
+	:root {
+		--gutter: 20px;
+		--nav-height: 56px;
+	}
+}
+
+@media (min-width: 810px) and (max-width: 1199px) {
+	:root {
+		--nav-height: 56px;
+	}
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	-webkit-text-size-adjust: 100%;
+}
+
+body {
+	margin: 0;
+	background: var(--primary-01);
+	color: var(--neutral-07);
+	font: 400 16px/1.4 var(--font-sans);
+	letter-spacing: -0.02em;
+	-webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+figure {
+	margin: 0;
+	padding: 0;
+}
+
+ul,
+ol {
+	list-style: none;
+}
+
+a {
+	color: inherit;
+	text-decoration: none;
+}
+
+strong {
+	font-weight: 700;
+}
+
+img,
+video {
+	display: block;
+	max-width: 100%;
+}
+
+button {
+	font: inherit;
+	letter-spacing: inherit;
+	color: inherit;
+	background: none;
+	border: 0;
+	padding: 0;
+	cursor: pointer;
+}
+
+:focus-visible {
+	outline: 2px solid var(--blue-02);
+	outline-offset: 2px;
+}
+
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+}
+
+/* Text styles */
+.t-h1,
+.t-h1b {
+	font-size: 68px;
+	line-height: 1.1;
+	letter-spacing: -0.04em;
+	color: var(--neutral-08);
+}
+.t-h1 {
+	font-family: var(--font-serif);
+	font-weight: 400;
+}
+.t-h1b {
+	font-family: var(--font-sans);
+	font-weight: 500;
+}
+.t-h2 {
+	font: 400 48px/1.1 var(--font-display);
+	letter-spacing: -0.04em;
+	color: var(--neutral-08);
+}
+.t-h3 {
+	font: 500 24px/1.2 var(--font-display);
+	letter-spacing: -0.02em;
+	color: var(--neutral-08);
+}
+.t-subtitle-l {
+	font: 400 24px/1.2 var(--font-serif);
+	letter-spacing: -0.02em;
+	color: var(--neutral-08);
+}
+.t-subtitle-m {
+	font: 400 20px/1.2 var(--font-serif);
+	letter-spacing: -0.02em;
+	color: var(--neutral-08);
+}
+.t-body-l {
+	font-size: 18px;
+}
+.t-body-m,
+.t-body-m-strong {
+	font-size: 16px;
+}
+.t-body-s,
+.t-body-s-strong {
+	font-size: 14px;
+}
+.t-body-xs {
+	font-size: 12px;
+}
+.t-body-m-strong,
+.t-body-s-strong {
+	font-weight: 500;
+}
+
+@media (max-width: 809px) {
+	.t-h1 {
+		font-size: 48px;
+		line-height: 1;
+	}
+	.t-h1b {
+		font-size: 44px;
+	}
+	.t-h2 {
+		font-size: 32px;
+	}
+	.t-h3,
+	.t-subtitle-l {
+		font-size: 22px;
+	}
+	.t-subtitle-m {
+		font-size: 18px;
+	}
+	.t-body-l {
+		font-size: 16px;
+	}
+}
+
+/* Small outlined pill (service tags, principle tags). Border is an inset shadow so it takes no space, as in Framer. */
+.tag {
+	display: inline-block;
+	padding: 6px 12px;
+	border-radius: 12px;
+	background: var(--neutral-01);
+	box-shadow: inset 0 0 0 1px var(--neutral-03);
+	font-size: 14px;
+	font-weight: 500;
+	white-space: pre;
+}
+
+/* Label that rolls up to a copy of itself on hover (Framer nav links and buttons). */
+.roll {
+	display: block;
+	height: 1lh;
+	overflow: clip;
+	white-space: pre;
+}
+.roll > span {
+	display: block;
+	position: relative;
+	/* ponytail: CSS ease-out stands in for Framer's spring (stiffness 500, damping 40–60); use linear() if the feel is off. */
+	transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.roll > span::after {
+	content: attr(data-text);
+	position: absolute;
+	top: 100%;
+	left: 0;
+}
+@media (hover: hover) {
+	a:hover .roll > span,
+	button:hover .roll > span {
+		transform: translateY(-100%);
+	}
+}
+
+/* Appear: hidden only when JS can reveal it again. */
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+	[data-appear] {
+		opacity: 0;
+		transform: translateY(20px);
+		transition:
+			opacity 0.6s var(--ease) var(--appear-delay, 0s),
+			transform 0.6s var(--ease) var(--appear-delay, 0s);
+	}
+	[data-appear='small'] {
+		transform: translateY(6px);
+	}
+	[data-appear].is-in {
+		opacity: 1;
+		transform: none;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.roll > span {
+		transition: none;
+	}
+}

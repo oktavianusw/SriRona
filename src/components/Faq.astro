@@ -1,0 +1,159 @@
+---
+import Chip from './Chip.astro';
+import CtaBar from './CtaBar.astro';
+import Plus from '../icons/plus.svg';
+import faqs from '../data/faqs.json';
+---
+
+<section class="faq">
+	<div class="inner">
+		<div class="head">
+			<Chip>FAQs</Chip>
+			<h2 class="t-h3">{faqs.heading}</h2>
+		</div>
+		<div class="list">
+			{
+				faqs.items.map(({ q, a }, i) => (
+					<div class="item">
+						<h3>
+							<button class="question t-body-m-strong" type="button" aria-expanded="false" aria-controls={`faq-${i}`}>
+								<span>{q}</span>
+								<Plus aria-hidden="true" />
+							</button>
+						</h3>
+						<div class="answer" id={`faq-${i}`} role="region">
+							<div>
+								<div class="answer-text">
+									{a.split('\n\n').map((paragraph) => (
+										<p class="t-body-m">{paragraph}</p>
+									))}
+								</div>
+							</div>
+						</div>
+					</div>
+				))
+			}
+			<CtaBar title="Masih ada pertanyaan?" text="Jangan ragu untuk sapa kami lewat email atau DM instagram." />
+		</div>
+	</div>
+</section>
+
+<script>
+	// Items are independent: opening one leaves the others as they are.
+	document.querySelectorAll<HTMLButtonElement>('.faq .question').forEach((button) =>
+		button.addEventListener('click', () => {
+			const open = button.getAttribute('aria-expanded') !== 'true';
+			button.setAttribute('aria-expanded', String(open));
+			button.closest('.item')!.classList.toggle('open', open);
+		}),
+	);
+</script>
+
+<style>
+	.faq {
+		display: flex;
+		justify-content: center;
+		padding: 100px 0 138px;
+		--chip-bg: var(--primary-02);
+	}
+	.inner {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 60px;
+		width: 100%;
+		max-width: 600px;
+	}
+	.head {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 24px;
+		max-width: 395px;
+		text-align: center;
+	}
+	.head h2 {
+		text-wrap: balance;
+	}
+	.list {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		width: 100%;
+	}
+	.item {
+		padding: 16px;
+		border-radius: 16px;
+		background: var(--neutral-01);
+		box-shadow: inset 0 0 0 1px var(--neutral-03);
+	}
+	.question {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		width: 100%;
+		color: var(--neutral-08);
+		text-align: left;
+	}
+	.question span {
+		flex: 1;
+	}
+	.question :global(svg) {
+		flex: none;
+		width: 16px;
+		height: 16px;
+		color: var(--neutral-07);
+		transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+	}
+	.open .question :global(svg) {
+		transform: rotate(-45deg);
+	}
+	/* grid rows animate the height from 0 to the answer's natural size. */
+	.answer {
+		display: grid;
+		grid-template-rows: 0fr;
+		opacity: 0;
+		visibility: hidden;
+		transition:
+			grid-template-rows 0.3s var(--ease),
+			opacity 0.3s var(--ease),
+			visibility 0.3s;
+	}
+	.answer > div {
+		min-height: 0;
+		overflow: clip;
+	}
+	.answer-text {
+		display: flex;
+		flex-direction: column;
+		gap: 12px;
+		max-width: 550px;
+		padding-top: 8px;
+		text-wrap: balance;
+	}
+	.open .answer {
+		grid-template-rows: 1fr;
+		opacity: 1;
+		visibility: visible;
+	}
+
+	@media (max-width: 1199px) {
+		.faq {
+			padding: 100px 40px 156px;
+		}
+	}
+	@media (max-width: 809px) {
+		.faq {
+			padding: 60px 20px 108px;
+		}
+		.inner {
+			gap: 40px;
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.answer,
+		.question :global(svg) {
+			transition: none;
+		}
+	}
+</style>

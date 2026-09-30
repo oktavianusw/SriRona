@@ -1,0 +1,54 @@
+---
+import Button from './Button.astro';
+import { EMAIL_URL } from '../consts';
+
+interface Props {
+	title: string;
+	text: string;
+}
+const { title, text } = Astro.props;
+---
+
+<div class="cta">
+	<div>
+		<p class="t-body-m-strong">{title}</p>
+		<p class="t-body-s">{text}</p>
+	</div>
+	<Button href={EMAIL_URL} label="Diskusikan sekarang" size="lg" variant="secondary" />
+</div>
+
+<style>
+	.cta {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+		width: 100%;
+		max-width: 600px;
+		padding: 16px;
+		border-radius: 16px;
+		background: var(--primary-02);
+		box-shadow: inset 0 0 0 1px var(--neutral-03);
+	}
+	.cta > div {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+		text-wrap: balance;
+	}
+	.cta .t-body-m-strong {
+		color: var(--neutral-08);
+	}
+
+	@media (max-width: 1199px) {
+		.cta {
+			max-width: none;
+		}
+	}
+	@media (max-width: 809px) {
+		.cta {
+			flex-wrap: wrap;
+			gap: 20px;
+		}
+	}
+</style>

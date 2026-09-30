@@ -1,0 +1,340 @@
+---
+import { Image } from 'astro:assets';
+import Button from '../../components/Button.astro';
+import CalendarDots from '../../icons/calendar-dots.svg';
+import ArrowRight from '../../icons/arrow-right.svg';
+import UserCircleGear from '../../icons/user-circle-gear.svg';
+import { moreWorks, works } from '../../data/works';
+import Base from '../../layouts/Base.astro';
+
+export function getStaticPaths() {
+	return works.map((work) => ({ params: { slug: work.slug }, props: { work } }));
+}
+
+const { work } = Astro.props;
+const more = moreWorks(work.slug);
+---
+
+<Base title={work.title} description={work.summaryText}>
+	<div class="page">
+		<header>
+			<div class="headline">
+				<div class="content">
+					<div class="head-text">
+						<h1 class="t-h1" data-appear>{work.title}</h1>
+						{work.summary && <p class="summary t-body-m" set:html={work.summary} data-appear style="--appear-delay: 0.2s" />}
+					</div>
+					<ul class="tags" data-appear style="--appear-delay: 0.4s">
+						<li class="tag">
+							<UserCircleGear aria-hidden="true" />
+							{work.author}
+						</li>
+						<li class="tag">
+							<CalendarDots aria-hidden="true" />
+							{work.date}
+						</li>
+					</ul>
+				</div>
+				{work.livePreview && (
+					<Button href={work.livePreview} label="Live Preview">
+						<ArrowRight aria-hidden="true" />
+					</Button>
+				)}
+			</div>
+			<div class="thumb">
+				<Image src={work.cover} alt="" widths={[640, 1120, 1680, 2240]} sizes="(min-width: 1200px) 1120px, 100vw" loading="eager" />
+			</div>
+		</header>
+
+		<div class="details">
+			<div class="overview">
+				{
+					work.blocks.map((block) =>
+						block.heading ? <h2 class="t-subtitle-l" set:html={block.html} /> : <p set:html={block.html} />,
+					)
+				}
+			</div>
+			{
+				work.gallery.length > 0 && (
+					<div class="gallery">
+						{work.gallery.map((src) => (
+							<div class="shot">
+								<Image src={src} alt="" widths={[640, 1120, 1680, 2240]} sizes="(min-width: 1200px) 1120px, 100vw" />
+							</div>
+						))}
+					</div>
+				)
+			}
+		</div>
+	</div>
+
+	<section class="more">
+		<div class="more-inner">
+			<h2 class="t-subtitle-l">Explore more.</h2>
+			<ul>
+				{
+					more.map((other) => (
+						<li>
+							<a class="more-card" href={`/work/${other.slug}`}>
+								<span class="more-media">
+									<Image src={other.cover} alt="" widths={[240, 480]} sizes="220px" />
+								</span>
+								<span class="more-text">
+									<span class="t-subtitle-m">{other.title}</span>
+									{other.summaryText && <span class="t-body-m clamp">{other.summaryText}</span>}
+								</span>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</section>
+</Base>
+
+<style>
+	.page {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 200px;
+		max-width: 1120px;
+		margin: 0 auto;
+		padding: 140px 0 100px;
+	}
+	header {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 60px;
+		width: 100%;
+	}
+	.headline {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 32px;
+		width: 100%;
+		max-width: 450px;
+	}
+	.content {
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+		width: 100%;
+	}
+	.head-text {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+	h1 {
+		color: var(--primary-04);
+	}
+	.tags {
+		display: flex;
+		align-items: center;
+		gap: 12px;
+	}
+	.tag {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+	}
+	.tag :global(svg) {
+		flex: none;
+		width: 16px;
+		height: 16px;
+	}
+	/* Images fill an aspect-ratio box absolutely, so the box never grows to the image's own ratio. */
+	.thumb,
+	.shot {
+		position: relative;
+		width: 100%;
+		border-radius: 40px;
+		overflow: clip;
+	}
+	.thumb {
+		aspect-ratio: 1.64706;
+	}
+	.thumb :global(img),
+	.shot :global(img) {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.details {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 200px;
+		width: 100%;
+	}
+	.overview {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		width: 100%;
+		max-width: 600px;
+	}
+	.overview h2 {
+		margin-bottom: 4px;
+	}
+	.gallery {
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+		width: 100%;
+	}
+	.shot {
+		aspect-ratio: 1.64609;
+	}
+
+	.more {
+		display: flex;
+		justify-content: center;
+		padding: 100px 0;
+	}
+	.more-inner {
+		display: flex;
+		flex-direction: column;
+		gap: 24px;
+		width: 100%;
+		max-width: 600px;
+	}
+	.more-inner h2 {
+		padding-left: 12px;
+		color: var(--neutral-07);
+	}
+	.more-inner ul {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+	.more-card {
+		display: flex;
+		gap: 16px;
+		padding: 12px;
+		border-radius: 24px;
+		background: var(--primary-01);
+		transition: background-color 0.3s;
+	}
+	.more-card:hover {
+		background: var(--primary-02);
+	}
+	.more-media {
+		position: relative;
+		flex: none;
+		width: 220px;
+		aspect-ratio: 1.4881;
+		border-radius: 12px;
+		overflow: clip;
+	}
+	.more-media :global(img) {
+		position: absolute;
+		inset: -3px -6px -4px -5px;
+		width: calc(100% + 11px);
+		height: calc(100% + 7px);
+		max-width: none;
+		object-fit: cover;
+		transition: inset 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+	}
+	.more-card:hover .more-media :global(img) {
+		inset: 0;
+		width: 100%;
+		height: 100%;
+	}
+	.more-text {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		gap: 6px;
+		padding-top: 8px;
+	}
+	.more-text .t-subtitle-m {
+		display: block;
+	}
+	.clamp {
+		display: -webkit-box;
+		-webkit-line-clamp: 3;
+		-webkit-box-orient: vertical;
+		overflow: clip;
+	}
+
+	@media (max-width: 1199px) {
+		.page {
+			max-width: 1200px; /* 1120px content + 2 × 40px padding */
+			padding: 140px 40px 100px;
+		}
+		.headline {
+			max-width: none;
+		}
+		.summary {
+			max-width: 500px;
+		}
+		.more {
+			padding: 100px 40px;
+		}
+		.more-inner h2 {
+			padding-left: 0;
+		}
+		.more-inner ul {
+			gap: 12px;
+		}
+		/* Touch layouts: always highlighted, image fills its box. */
+		.more-card {
+			background: var(--primary-02);
+		}
+		.more-media :global(img) {
+			inset: 0;
+			width: 100%;
+			height: 100%;
+		}
+	}
+	@media (max-width: 809px) {
+		.page {
+			gap: 60px;
+			padding: 100px 20px 60px;
+		}
+		header {
+			gap: 28px;
+		}
+		.headline {
+			gap: 24px;
+			max-width: 450px;
+		}
+		.content {
+			gap: 16px;
+		}
+		.tags {
+			flex-wrap: wrap;
+			gap: 8px;
+		}
+		.thumb,
+		.shot {
+			border-radius: 24px;
+		}
+		.details {
+			gap: 60px;
+		}
+		.more {
+			padding: 60px 20px 108px;
+		}
+		.more-card {
+			align-items: center;
+			padding: 8px;
+		}
+		.more-media {
+			width: 120px;
+		}
+		.more-text {
+			padding-top: 0;
+		}
+		.more-text .clamp {
+			display: none;
+		}
+	}
+</style>

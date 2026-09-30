@@ -1,0 +1,139 @@
+---
+import { Image } from 'astro:assets';
+import Chip from '../Chip.astro';
+import { team } from '../../data/team';
+---
+
+<section class="team">
+	<div class="intro">
+		<Chip>Team</Chip>
+		<h2 class="t-h2">Salam Kenal dari SriRona!</h2>
+		<p class="t-body-l">
+			Kami adalah studio kreatif kolektif yang tumbuh dari rasa ingin tahu serta pengalaman di ranah desain dan komunikasi strategis.
+			Kami percaya bahwa produk digital terbaik tidak hanya mengandalkan teknologi untuk mencapai tujuan, tetapi juga harus mampu
+			menyentuh sisi manusiawi penggunanya.
+		</p>
+		<p class="t-body-l">
+			Tim inti kami memang ramping. Namun, kami bersinergi dengan para spesialis lintas industri: seperti developer, researcher,
+			ilustrator, dan penulis terpercaya. Karena bagi kami, solusi terbaik lahir dari pertukaran pikiran yang terbuka, bukan dari satu
+			meja kerja yang kaku.
+		</p>
+		<p class="t-body-l">
+			Bekerja secara remote dari Bandung, Tangerang, dan Yogyakarta, kami membuka ruang kerja sama bagi para pendiri bisnis, marketer,
+			maupun organisasi yang sedang merintis hal baru, mengembangkan bisnis, atau sekadar mencari arah. Mari luangkan waktu untuk
+			mengobrol santai seputar produk dan desain. <strong>Tanpa tuntutan, tanpa tekanan</strong>.
+		</p>
+	</div>
+	<ul class="members">
+		{
+			team.map(({ name, role, photo, bio }) => (
+				<li>
+					<Image class="photo" src={photo} alt={name} width={286} />
+					<h3 class="t-subtitle-m">
+						<span>{name}</span>
+						<span class="dash"> - </span>
+						<span>{role}</span>
+					</h3>
+					<p class="t-body-l">{bio}</p>
+				</li>
+			))
+		}
+	</ul>
+</section>
+
+<style>
+	.team {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 36px;
+		padding: 100px 0;
+		--chip-bg: var(--primary-02);
+	}
+	.intro {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 24px;
+		width: 100%;
+		max-width: 1000px;
+		text-wrap: balance;
+	}
+	.intro h2 {
+		text-wrap: wrap;
+	}
+	.members {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 500px));
+		gap: 36px 24px;
+		width: 100%;
+		padding: 0 200px;
+	}
+	.members li {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 24px;
+		text-wrap: balance;
+	}
+	.photo {
+		width: 143px;
+		height: auto;
+		aspect-ratio: 0.713158;
+		border-radius: 24px;
+		object-fit: cover;
+	}
+	.members h3 {
+		max-width: 450px;
+	}
+	.members p {
+		max-width: 400px;
+	}
+
+	@media (max-width: 1199px) {
+		.team {
+			padding: 100px 40px;
+		}
+		.intro p {
+			max-width: 700px;
+		}
+		.members {
+			grid-template-columns: repeat(2, minmax(0, 350px));
+			column-gap: 32px;
+			padding: 0;
+		}
+		/* Tablet puts name and role on separate lines. */
+		.members h3 span {
+			display: block;
+		}
+		.members h3 .dash {
+			display: none;
+		}
+		.members h3 span:last-child {
+			margin-top: 24px;
+		}
+	}
+
+	@media (max-width: 809px) {
+		.team {
+			padding: 60px 20px;
+		}
+		.members {
+			grid-template-columns: 1fr;
+		}
+		.members h3 span,
+		.members h3 .dash {
+			display: inline;
+		}
+		.members h3 span:last-child {
+			margin-top: 0;
+		}
+		.intro p,
+		.members p {
+			max-width: 349px;
+		}
+		.members h3 {
+			max-width: 349px;
+		}
+	}
+</style>

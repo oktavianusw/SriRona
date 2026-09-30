@@ -1,0 +1,91 @@
+---
+import { Image } from 'astro:assets';
+import Crown from '../icons/crown.svg';
+import type { Work } from '../data/works';
+
+interface Props {
+	work: Work;
+}
+const { work } = Astro.props;
+---
+
+<a class="card" href={`/work/${work.slug}`}>
+	<span class="media">
+		<Image src={work.cover} alt="" widths={[560, 1120, 1680]} sizes="(min-width: 1200px) 552px, (min-width: 810px) 730px, 350px" />
+	</span>
+	<span class="pill t-subtitle-m">
+		<Crown aria-hidden="true" />
+		<span class="roll"><span data-text={work.title}>{work.title}</span></span>
+	</span>
+</a>
+
+<style>
+	.card {
+		position: relative;
+		display: block;
+		aspect-ratio: 1.5;
+		border-radius: 24px;
+		overflow: clip;
+	}
+	/* Slightly oversized so it can settle to fit on hover, as in Framer. */
+	.media {
+		position: absolute;
+		inset: -4px -6px;
+		transition: inset 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+	}
+	.media :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+	.card:hover .media {
+		inset: 0;
+	}
+	.pill {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		max-width: calc(100% - 24px);
+		padding: 8px 16px;
+		border-radius: 100px;
+		background: rgb(255 255 255 / 0.8);
+		backdrop-filter: blur(10px);
+		box-shadow:
+			0 0.6px 0.6px -1.25px rgb(0 0 0 / 0.18),
+			0 2.29px 2.29px -2.5px rgb(0 0 0 / 0.16),
+			0 10px 10px -3.75px rgb(0 0 0 / 0.06);
+		transform: translate(-50%, -50%);
+	}
+	.pill :global(svg) {
+		flex: none;
+		width: 24px;
+		height: 24px;
+	}
+
+	@media (max-width: 1199px) {
+		/* No hover on touch layouts: show the title as plain text. */
+		.pill .roll {
+			height: auto;
+			overflow: visible;
+		}
+		.pill .roll > span::after {
+			content: none;
+		}
+	}
+	@media (max-width: 809px) {
+		.media {
+			inset: 0;
+		}
+		/* Framer clips long titles on phones; wrapping keeps them readable. */
+		.pill .roll {
+			white-space: normal;
+		}
+		.pill :global(svg) {
+			width: 20px;
+			height: 20px;
+		}
+	}
+</style>

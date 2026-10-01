@@ -66,7 +66,8 @@ Project Sanity: **SriRona**, ID `48dbdtpq`, dataset `production` (publik untuk b
 - [x] Impor 6 karya ke Sanity (terverifikasi di dataset dan di situs produksi)
 - [x] Deploy Studio → https://srirona.sanity.studio
 - [ ] Undang tim studio sebagai Editor
-- [x] Webhook Sanity → Vercel dibuat (uji end-to-end: Publish sebuah perubahan lalu pastikan deployment baru muncul)
+- [x] Webhook Sanity → Vercel dibuat dan diuji end-to-end (2026-10-01): karya baru yang di-Publish tayang di situs dalam ±30 detik.
+- [ ] **Hapus karya uji "TEST — Karya Uji"** (`/work/test-sanity`, urutan 99) dari Studio setelah dilihat.
 - **Cek:** ubah karya di Studio → Publish → situs produksi berubah dalam 1–2 menit
 
 Perintah (dari root project):
@@ -134,6 +135,7 @@ Dibandingkan dengan Framer di 390, 430, 600, 767px (292 teks: lebar, posisi, uku
 - **Terms of Service masih template Framer** — isinya bahkan teks Privacy Policy "Pulma", bukan syarat layanan. Belum ditautkan dari mana pun; perlu teks dari klien.
 - Form kontak: label sekarang ikut bahasa halaman (ID: Nama/Pesan/Kirim), Phone ditandai "(opsional)", di bawah tombol ada "biasanya membalas dalam 1–2 hari kerja" (**konfirmasi angka ini ke klien**) + persetujuan Kebijakan Privasi, di bawah kartu ada link email.
 - Halaman 404 masih berbahasa Inggris ("This page isn’t here."). Tombol "Back to Home" di Framer mengarah ke WhatsApp; di sini diarahkan ke `/`.
+- **Galeri karya mengikuti rasio asli gambar** (keputusan 2026-10-01; Framer memotong semua ke ±1,65:1). Gambar kotak/portrait tampil utuh; poster portrait Tokopedia S.O.S jadi ±1824px tinggi di desktop — ganti dengan versi landscape lewat Studio kalau terlalu panjang.
 - **Tokopedia Official Store x PVRA x AVA x Kami tidak punya gambar galeri** (di Framer juga kosong; Framer tetap menyisakan jarak 200px kosong, di sini jarak itu dihilangkan). Tambahkan gambarnya lewat Studio kalau ada.
 - Link Behance (Torico, KitaLulus) menolak pengecekan otomatis (403 untuk bot); buka manual di browser untuk memastikan.
 - Tanggal karya ganjil ("Dec 1, 2019", "Jan 1, 2019"…), tampaknya placeholder.

@@ -157,8 +157,7 @@ const more = Astro.props.more.map((other) => inLang(other, lang));
 	.thumb {
 		aspect-ratio: 1.64706;
 	}
-	.thumb :global(img),
-	.shot :global(img) {
+	.thumb :global(img) {
 		position: absolute;
 		inset: 0;
 		width: 100%;
@@ -189,8 +188,11 @@ const more = Astro.props.more.map((other) => inLang(other, lang));
 		gap: 24px;
 		width: 100%;
 	}
-	.shot {
-		aspect-ratio: 1.64609;
+	/* Gallery images keep their own shape (square, portrait, landscape), unlike Framer's fixed crop. */
+	.shot :global(img) {
+		display: block;
+		width: 100%;
+		height: auto;
 	}
 
 	.more {

@@ -59,7 +59,7 @@ Styling pakai CSS biasa (scoped style Astro), tanpa Tailwind/framework UI.
 Hasil banding (Playwright, selisih piksel vs Framer): mayoritas halaman/breakpoint < 1%; Home 4–6% (frame video hero berbeda tiap load); tinggi halaman pas atau ±3px.
 
 ### Fase 4 — Karya + Sanity
-Project Sanity: **SriRona**, ID `48dbdtpq`, dataset `production` (publik untuk baca), `studiosrirona@gmail.com` sudah diundang sebagai Administrator. Situs: https://srirona.vercel.app
+Project Sanity: **SriRona**, ID `48dbdtpq`, dataset `production` (publik untuk baca), `studiosrirona@gmail.com` sudah diundang sebagai Administrator. Situs: https://www.studiosrirona.com (juga https://srirona.vercel.app)
 - [x] Skema "Karya" (`studio/schemaTypes/work.ts`), Studio (`sanity.config.ts`, host `srirona.sanity.studio`)
 - [x] Situs membaca karya dari Sanity saat build (`src/data/works.ts`); `/work`, `/work/[slug]` dan "Explore more" dari data CMS
 - [x] Data 6 karya + gambar disiapkan untuk impor (`studio/seed/`), konversi teks diuji tanpa selisih
@@ -103,7 +103,8 @@ Pakai Web3Forms (gratis, 250 kiriman/bulan, langsung ke email studio).
 Butuh: repo GitHub, akun Vercel, domain.
 - [ ] Deploy ke Vercel
 - [ ] Webhook Sanity → build ulang Vercel
-- [ ] Domain + redirect (kalau slug karya diganti)
+- [x] Domain `studiosrirona.com` (beli di Hostinger, nameserver tetap Hostinger). DNS: A `@` → `216.198.79.1`, CNAME `www` → `00ac846300597b6b.vercel-dns-017.com` (TTL 300). Utama `www.studiosrirona.com`; `studiosrirona.com` di-redirect 308 ke www. `site` di `astro.config.mjs` ikut www.
+- [ ] Redirect slug karya (hanya kalau slug diganti)
 - [ ] Panduan singkat untuk tim studio: cara tambah/ubah karya
 - **Cek:** publish di Sanity → tayang di situs produksi tanpa developer
 
@@ -118,7 +119,7 @@ Butuh: repo GitHub, akun Vercel, domain.
 
 ## Belum diputuskan
 
-- Domain (sekarang masih `*.framer.website`)
+- Situs Framer lama (`studiosrirona.framer.website`) masih hidup — matikan/arahkan setelah klien setuju
 - Slug karya: tetap pakai nama orang (`/work/saski`) atau ganti ke nama proyek (butuh redirect)
 
 ## Responsive HP (dicek 2026-09-30)

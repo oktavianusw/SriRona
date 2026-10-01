@@ -2,9 +2,11 @@
 import { EMAIL_URL, WEB3FORMS_KEY } from '../consts';
 import Faq from '../components/Faq.astro';
 import Base from '../layouts/Base.astro';
-import { useT } from '../i18n';
+import { langOf, localePath, useT } from '../i18n';
 
 const t = useT(Astro);
+const privacyUrl = localePath('/legal/privacy-policy', langOf(Astro));
+const submitLabel = t('Kirim', 'Submit');
 const intro = t(
 	'Ceritakan kebutuhan kreatifmu, kami siap bersama-sama temukan solusi terbaiknya.',
 	"Tell us about your creative needs, and let's find the best solution together.",
@@ -18,6 +20,8 @@ const messages = {
 	inactiveText: t('Sementara, kirim pesanmu langsung ke', 'For now, please send your message directly to'),
 	failed: t('Pesan belum terkirim', "Your message wasn't sent"),
 	failedText: t('Coba lagi sebentar lagi, atau kirim langsung ke', 'Please try again shortly, or send it directly to'),
+	sending: t('Mengirim…', 'Sending…'),
+	submit: submitLabel,
 };
 ---
 
@@ -34,26 +38,34 @@ const messages = {
 			<form method="post" data-key={WEB3FORMS_KEY} data-messages={JSON.stringify(messages)}>
 				<div class="fields">
 				<label>
-					<span class="t-body-m-strong">Name</span>
-					<input type="text" name="name" placeholder="Enter your name" autocomplete="name" required />
+					<span class="t-body-m-strong">{t('Nama', 'Name')}</span>
+					<input type="text" name="name" placeholder={t('Masukkan namamu', 'Enter your name')} autocomplete="name" required />
 				</label>
 				<label>
 					<span class="t-body-m-strong">Email</span>
-					<input type="email" name="email" placeholder="yourname@gmail.com" autocomplete="email" required />
+					<input type="email" name="email" placeholder={t('namakamu@gmail.com', 'yourname@gmail.com')} autocomplete="email" required />
 				</label>
 				<label>
-					<span class="t-body-m-strong">Phone Number</span>
-					<input type="tel" name="phone" placeholder="Enter your phone number" autocomplete="tel" />
+					<span class="t-body-m-strong">
+						{t('Nomor Telepon', 'Phone Number')} <span class="optional">{t('(opsional)', '(optional)')}</span>
+					</span>
+					<input type="tel" name="phone" placeholder={t('Masukkan nomor teleponmu', 'Enter your phone number')} autocomplete="tel" />
 				</label>
 				<label class="message">
-					<span class="t-body-m-strong">Message</span>
-					<textarea name="message" placeholder="Tell us about your project" required></textarea>
+					<span class="t-body-m-strong">{t('Pesan', 'Message')}</span>
+					<textarea name="message" placeholder={t('Ceritakan tentang proyekmu', 'Tell us about your project')} required></textarea>
 				</label>
 				<!-- Honeypot: real visitors never see or fill this. -->
 				<input class="trap" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
 				<button class="submit t-body-m-strong" type="submit">
-					<span class="roll"><span data-text="Submit">Submit</span></span>
+					<span class="roll"><span data-text={submitLabel}>{submitLabel}</span></span>
 				</button>
+				<p class="note t-body-s">
+					<span>{t('Kami biasanya membalas dalam 1–2 hari kerja.', 'We usually reply within 1–2 business days.')}</span>
+					<span>
+						{t('Dengan mengirim formulir ini, kamu menyetujui ', 'By submitting this form, you agree to our ')}<a href={privacyUrl}>{t('Kebijakan Privasi', 'Privacy Policy')}</a>{t(' kami.', '.')}
+					</span>
+				</p>
 				</div>
 				<div class="status t-body-m" role="status" aria-live="polite" tabindex="-1" hidden>
 					<p class="status-title t-subtitle-m"></p>
@@ -62,6 +74,9 @@ const messages = {
 				</div>
 			</form>
 		</div>
+		<p class="alt t-body-s">
+			{t('Lebih suka email?', 'Prefer email?')} <a href={EMAIL_URL}>studiosrirona@gmail.com</a>
+		</p>
 	</div>
 	<Faq />
 </Base>
@@ -96,7 +111,7 @@ const messages = {
 		if (!key) return show('error', m.inactive, m.inactiveText);
 
 		button.disabled = true;
-		label.textContent = 'Sending…';
+		label.textContent = m.sending;
 		try {
 			const response = await fetch('https://api.web3forms.com/submit', {
 				method: 'POST',
@@ -118,7 +133,7 @@ const messages = {
 		} catch {
 			show('error', m.failed, m.failedText);
 			button.disabled = false;
-			label.textContent = 'Submit';
+			label.textContent = m.submit;
 		}
 	});
 </script>
@@ -185,6 +200,27 @@ const messages = {
 	}
 	.message {
 		padding-bottom: 16px;
+	}
+	.optional {
+		font-weight: 400;
+		color: var(--neutral-06);
+	}
+	.note {
+		text-align: center;
+		text-wrap: balance;
+	}
+	.note > span {
+		display: block;
+	}
+	.alt {
+		margin-top: -36px; /* sits close under the card instead of the page's 60px gap */
+		text-align: center;
+	}
+	.note a,
+	.alt a {
+		color: var(--neutral-08);
+		text-decoration: underline;
+		text-underline-offset: 3px;
 	}
 	input,
 	textarea {

@@ -86,7 +86,7 @@ Webhook rebuild: Vercel → Settings → Git → **Deploy Hooks** → buat hook 
 ### Fase 5 — Form kontak
 Pakai Web3Forms (gratis, 250 kiriman/bulan, langsung ke email studio).
 - [x] Form dikirim lewat JS: validasi bawaan browser, status "Sending…", pesan sukses, pesan gagal (isian tetap ada, ada link email cadangan), honeypot anti-spam. Diuji dengan request yang dicegat (sukses, gagal, key kosong, honeypot).
-- [ ] **Isi access key** di `src/consts.ts` (`WEB3FORMS_KEY`): buat di web3forms.com dengan email `studiosrirona@gmail.com`. Selama kosong, form menampilkan "Formulir belum aktif" + link email.
+- [x] Access key Web3Forms diisi di `src/consts.ts` (`WEB3FORMS_KEY`, publik by design). Kiriman masuk ke email yang dipakai saat membuat key.
 - [ ] Uji kirim sungguhan sekali dari situs produksi, pastikan email masuk (cek juga folder spam)
 - **Cek:** kirim form uji → pesan sampai ke email studio
 
@@ -129,8 +129,10 @@ Dibandingkan dengan Framer di 390, 430, 600, 767px (292 teks: lebar, posisi, uku
 ## Temuan konten (butuh keputusan klien)
 
 - **Link Live Preview sudah diganti** dengan link asli dari dokumen klien (Formulatrix, Torico, KitaLulus → Behance/Framer; Tokopedia Official Store → file Google Drive; Grief → Framer). Tokopedia S.O.S Promo sengaja tanpa link, jadi tombolnya tidak tampil. Link Google Drive harus disetel "siapa saja dengan link" agar bisa dibuka pengunjung.
-- **Privacy Policy & Terms of Service = template bawaan Framer** (bahasa Inggris, menyebut "Pulma", tanggal 9 April 2026), bukan teks SriRona. Disalin apa adanya; sebaiknya diganti sebelum rilis.
-- Halaman 404 dan form kontak masih berbahasa Inggris ("This page isn’t here.", "Enter your name", "Submit"). Tombol "Back to Home" di Framer mengarah ke WhatsApp; di sini diarahkan ke `/`.
+- **Privacy Policy sudah ditulis ulang untuk SriRona** (ID + EN, 1 Oktober 2026): data dari form kontak, tanpa analitik/cookie, pihak ketiga Web3Forms/Gmail/Vercel, hak sesuai UU PDP No. 27/2022. Draf dari developer, **minta klien membaca dan menyetujui** (bukan nasihat hukum). Kalau nanti pasang analitik, bagian "tanpa analitik/cookie" harus diubah.
+- **Terms of Service masih template Framer** — isinya bahkan teks Privacy Policy "Pulma", bukan syarat layanan. Belum ditautkan dari mana pun; perlu teks dari klien.
+- Form kontak: label sekarang ikut bahasa halaman (ID: Nama/Pesan/Kirim), Phone ditandai "(opsional)", di bawah tombol ada "biasanya membalas dalam 1–2 hari kerja" (**konfirmasi angka ini ke klien**) + persetujuan Kebijakan Privasi, di bawah kartu ada link email.
+- Halaman 404 masih berbahasa Inggris ("This page isn’t here."). Tombol "Back to Home" di Framer mengarah ke WhatsApp; di sini diarahkan ke `/`.
 - **Tokopedia Official Store x PVRA x AVA x Kami tidak punya gambar galeri** (di Framer juga kosong; Framer tetap menyisakan jarak 200px kosong, di sini jarak itu dihilangkan). Tambahkan gambarnya lewat Studio kalau ada.
 - Link Behance (Torico, KitaLulus) menolak pengecekan otomatis (403 untuk bot); buka manual di browser untuk memastikan.
 - Tanggal karya ganjil ("Dec 1, 2019", "Jan 1, 2019"…), tampaknya placeholder.

@@ -6,7 +6,7 @@ export const INSTAGRAM_URL = 'https://www.instagram.com/studiosrirona/';
 
 // Contact form: create a free key at https://web3forms.com for studiosrirona@gmail.com and paste it here.
 // The key is public by design (it only lets a form post to that one inbox). Empty = form shows a "not active" message.
-export const WEB3FORMS_KEY = '';
+export const WEB3FORMS_KEY = '5e1678ca-49e8-4d15-aad8-5167be71eabe';
 
 // Public identifiers (safe to commit). The dataset is public read; only editing needs a login.
 export const SANITY_PROJECT_ID = '48dbdtpq';

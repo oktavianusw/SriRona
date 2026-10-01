@@ -1,12 +1,16 @@
 ---
 import legal from '../../data/legal.json';
 import Base from '../../layouts/Base.astro';
+import { langOf, useT } from '../../i18n';
 
 export function getStaticPaths() {
 	return Object.entries(legal).map(([slug, page]) => ({ params: { slug }, props: { page } }));
 }
 
-const { page } = Astro.props;
+const t = useT(Astro);
+// A page may carry an Indonesian version under "id"; otherwise both languages show the English text.
+const source: { title: string; updated: string; datetime: string; html: string; id?: { title: string; updated: string; html: string } } = Astro.props.page;
+const page = langOf(Astro) === 'id' && source.id ? { ...source, ...source.id } : source;
 ---
 
 <Base title={page.title} description={`${page.title} Studio SriRona.`}>
@@ -14,7 +18,7 @@ const { page } = Astro.props;
 		<header>
 			<h1 class="t-h1b" data-appear>{page.title}</h1>
 			<p class="updated t-body-s">
-				<span>Last updated at</span>
+				<span>{t('Terakhir diperbarui', 'Last updated at')}</span>
 				<time datetime={page.datetime}>{page.updated}</time>
 			</p>
 		</header>
@@ -83,6 +87,10 @@ const { page } = Astro.props;
 	}
 	.prose :global(* + ul) {
 		margin-top: 12px;
+	}
+	.prose :global(a) {
+		text-decoration: underline;
+		text-underline-offset: 3px;
 	}
 	.prose :global(li) {
 		position: relative;

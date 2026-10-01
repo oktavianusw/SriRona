@@ -21,6 +21,7 @@ const messages = {
 	failed: t('Pesan belum terkirim', "Your message wasn't sent"),
 	failedText: t('Coba lagi sebentar lagi, atau kirim langsung ke', 'Please try again shortly, or send it directly to'),
 	sending: t('Mengirim…', 'Sending…'),
+	didYouMean: t('Maksudmu', 'Did you mean'),
 	submit: submitLabel,
 };
 ---
@@ -43,7 +44,8 @@ const messages = {
 				</label>
 				<label>
 					<span class="t-body-m-strong">Email</span>
-					<input type="email" name="email" placeholder={t('namakamu@gmail.com', 'yourname@gmail.com')} autocomplete="email" required />
+					<input type="email" name="email" placeholder={t('namakamu@gmail.com', 'yourname@gmail.com')} autocomplete="email" required aria-describedby="email-hint" />
+					<p class="email-hint t-body-s" id="email-hint" aria-live="polite" hidden></p>
 				</label>
 				<label>
 					<span class="t-body-m-strong">
@@ -82,6 +84,8 @@ const messages = {
 </Base>
 
 <script>
+	import { suggestEmail } from '../lib/email-typo';
+
 	const form = document.querySelector<HTMLFormElement>('.form-card form')!;
 	const button = form.querySelector<HTMLButtonElement>('.submit')!;
 	const label = button.querySelector<HTMLElement>('.roll > span')!;
@@ -101,8 +105,34 @@ const messages = {
 		status.focus();
 	};
 
+	// Email typo hint ("gmail.con" → "gmail.com"): shown on leaving the field and once on submit.
+	const email = form.querySelector<HTMLInputElement>('input[name="email"]')!;
+	const hint = form.querySelector<HTMLElement>('.email-hint')!;
+	let warned = '';
+	const checkEmail = () => {
+		const suggestion = suggestEmail(email.value.trim());
+		hint.hidden = !suggestion;
+		if (!suggestion) return false;
+		const fix = document.createElement('button');
+		fix.type = 'button';
+		fix.textContent = suggestion;
+		fix.addEventListener('click', () => {
+			email.value = suggestion;
+			hint.hidden = true;
+			email.focus();
+		});
+		hint.replaceChildren(`${m.didYouMean} `, fix, '?');
+		return true;
+	};
+	email.addEventListener('change', checkEmail);
+
 	form.addEventListener('submit', async (event) => {
 		event.preventDefault();
+		// Stop once so the visitor sees the hint; submitting the same address again sends it as typed.
+		if (email.value !== warned && checkEmail()) {
+			warned = email.value;
+			return email.focus();
+		}
 		const data = new FormData(form);
 		// Honeypot: a bot filled the hidden field. Pretend it worked, send nothing.
 		if (data.get('website')) return show('sent', m.thanks, m.received);
@@ -200,6 +230,19 @@ const messages = {
 	}
 	.message {
 		padding-bottom: 16px;
+	}
+	.email-hint {
+		margin-top: -4px;
+		color: var(--neutral-07);
+	}
+	.email-hint :global(button) {
+		color: var(--neutral-08);
+		font-weight: 700;
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+	.email-hint[hidden] {
+		display: none;
 	}
 	.optional {
 		font-weight: 400;

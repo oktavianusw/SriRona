@@ -87,7 +87,8 @@ Webhook rebuild: Vercel → Settings → Git → **Deploy Hooks** → buat hook 
 Pakai Web3Forms (gratis, 250 kiriman/bulan, langsung ke email studio).
 - [x] Form dikirim lewat JS: validasi bawaan browser, status "Sending…", pesan sukses, pesan gagal (isian tetap ada, ada link email cadangan), honeypot anti-spam. Diuji dengan request yang dicegat (sukses, gagal, key kosong, honeypot).
 - [x] Access key Web3Forms diisi di `src/consts.ts` (`WEB3FORMS_KEY`, publik by design). Kiriman masuk ke email yang dipakai saat membuat key.
-- [ ] Uji kirim sungguhan sekali dari situs produksi, pastikan email masuk (cek juga folder spam)
+- [x] Uji kirim dari situs produksi (2026-10-01): email "Pesan baru dari website SriRona" masuk ke Inbox studio (bukan spam), semua field terbawa, dan Reply langsung ke email pengunjung.
+- [x] Peringatan typo email ("gmail.con" → "Maksudmu …@gmail.com?"), `src/lib/email-typo.ts`, tes: `node --test src/lib/email-typo.test.ts`. Kirim pertama ditahan sekali; kalau dikirim lagi tanpa diubah, tetap terkirim apa adanya.
 - **Cek:** kirim form uji → pesan sampai ke email studio
 
 ### Fase 6 — QA

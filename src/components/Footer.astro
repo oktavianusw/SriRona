@@ -4,15 +4,19 @@ import Button from './Button.astro';
 import Logo from './Logo.astro';
 import background from '../assets/framer/1yjjlVoTnHH4K5HR64OHDOlSVdU.webp';
 import { INSTAGRAM_URL, LINKEDIN_URL, EMAIL_URL } from '../consts';
+import { langOf, localePath, useT } from '../i18n';
+
+const t = useT(Astro);
+const lang = langOf(Astro);
 
 const groups = [
 	{
 		title: 'Navigation',
 		links: [
-			{ href: '/', label: 'Home' },
-			{ href: '/work', label: 'Work' },
-			{ href: '/about', label: 'About Us' },
-			{ href: '/contact', label: 'Contact' },
+			{ href: localePath('/', lang), label: 'Home' },
+			{ href: localePath('/work', lang), label: 'Work' },
+			{ href: localePath('/about', lang), label: 'About Us' },
+			{ href: localePath('/contact', lang), label: 'Contact' },
 		],
 	},
 	{
@@ -33,10 +37,12 @@ const groups = [
 			<div class="cta">
 				<Logo />
 				<div class="text">
-					<h2 class="headline t-h1b">Tertarik Berdiskusi?</h2>
-					<p class="lead t-body-m">Ceritakan kebutuhan kreatifmu, kami siap bersama-sama temukan solusi terbaiknya.</p>
+					<h2 class="headline t-h1b">{t('Tertarik Berdiskusi?', 'Up for a Chat?')}</h2>
+					<p class="lead t-body-m">
+						{t('Ceritakan kebutuhan kreatifmu, kami siap bersama-sama temukan solusi terbaiknya.', "Tell us about your creative needs, and let's find the best solution together.")}
+					</p>
 				</div>
-				<Button href={EMAIL_URL} label="Diskusikan sekarang" />
+				<Button href={EMAIL_URL} label={t('Diskusikan sekarang', "Let's talk")} />
 			</div>
 			<div class="groups">
 				{

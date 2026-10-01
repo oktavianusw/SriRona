@@ -1,13 +1,15 @@
 ---
 import { Image } from 'astro:assets';
 import logo from '../assets/framer/4CNi0AkVYPXeSggbBGzQnKRpMNc.png';
+import { langOf, localePath, useT } from '../i18n';
 
 interface Props {
 	class?: string;
 }
+const t = useT(Astro);
 ---
 
-<a class:list={['logo', Astro.props.class]} href="/#hero" aria-label="SriRona — beranda">
+<a class:list={['logo', Astro.props.class]} href={localePath('/#hero', langOf(Astro))} aria-label={t('SriRona — beranda', 'SriRona — home')}>
 	<Image src={logo} alt="" width={24} height={24} densities={[1, 2, 3]} />
 	<span class="t-subtitle-m">SriRona</span>
 </a>

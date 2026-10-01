@@ -1,0 +1,65 @@
+{
+  "work-saski": {
+    "summary": "Simplifying Protocol Creation · Designing a more intuitive way for scientists to build and run liquid handling protocols with F.A.S.T.",
+    "body": [
+      "We redesigned the <strong>Protocol Editor</strong> for F.A.S.T., a laboratory automation system that helps scientists automate <em>liquid handling</em>. The goal was to make building protocols feel more intuitive and familiar, while still accommodating the complexity of lab workflows.",
+      "We explored how manual sample transfers could be translated into a digital interface without losing the logic and flexibility scientists need. The result brings the entire protocol-building process into a single workspace, where users can define sample transfer tasks, set volumes and <em>wells</em>, and review the protocol before running it.",
+      "Once a protocol is running, the system gives clear progress and status information, while keeping controls like <em>pause</em> and <em>abort</em> within easy reach."
+    ]
+  },
+  "work-tasya": {
+    "summary": "Branding & Media Promotion",
+    "body": [
+      "Torico was built on one simple idea:",
+      "bringing authentic Japanese flavors closer, more familiar, and more fun.",
+      "Inspired by the dynamic, energetic character of Japanese restaurants, Torico's identity blends Japanese visual elements with a more modern and playful approach. Red and black form the foundation of the brand, creating an impression that is bold, warm, and appetizing.",
+      "At the heart of this identity is the Torico character, a mascot that serves as the face of the brand.",
+      "Brand Character",
+      "Bold · Playful · Authentic · Friendly · Energetic",
+      "Branding Scope",
+      "Brand Identity · Logo Design · Mascot Character · Typography · Color System · Menu · Banner. Promotional Materials · Environmental Branding"
+    ]
+  },
+  "work-kita-bertiga": {
+    "summary": "What if finding the best candidate could be as simple as a few clicks?",
+    "body": [
+      "Designing the KitaLulus AI Headhunter landing page to translate complex recruitment technology into a digital experience that is simple and easy to understand. It also combines storytelling, product visualization, and conversion-focused design to build trust while encouraging users to try the service.",
+      "Making Technology Feel Simple",
+      "One of the main challenges was introducing AI technology without making the product feel complicated.",
+      "So the design takes a clean SaaS interface approach, with plenty of white space, a card-based layout, confident typography, and blue–purple accents to convey:",
+      "Design Direction",
+      "Clean SaaS · AI-Powered · Trustworthy · Efficient · Human-Centered",
+      "Design Scope",
+      "Landing Page Design · UX Strategy · UX Writing . Information Architecture · UI Design · SaaS Product Showcase · Conversion Design"
+    ]
+  },
+  "work-nesti": {
+    "body": [
+      "Tokopedia S.O.S (Serbu Official Store) Promo is a mid-month promotion, timed for when shopping tends to slow down because consumers are reaching the “end” of their monthly budget, while the next payday still feels far away.",
+      "With a core target of white-collar workers aged 25–40 with fairly strong purchasing power, the challenge wasn't just to get them shopping, but to make a mid-month promo feel relevant to the financial situation they were in.",
+      "Rather than communicating the promo as just another discount event, the campaign positioned S.O.S as a “rescue” on the journey to the next payday.",
+      "CREATIVE APPROACH",
+      "“Landing in the Middle of the Month.” As the copywriter, Amnesti built on the insight that mid-month is when the urge to shop is still there, but the next payday feels further and further away. This insight was translated literally through a space-travel metaphor: “Last Month's Allowance” → “You” → “Next Month's Allowance.”",
+      "The concept was then adapted into Out-of-Home ads on the Jakarta MRT, drawing on the target audience's context of commuting and mobility. Elements such as routes, stops, UFOs, and space landscapes reinforced the idea that the next payday feels like it's on another planet, while S.O.S arrives as the promo “landing” that lets them keep shopping smart mid-month."
+    ]
+  },
+  "work-nesti-2": {
+    "body": [
+      "OVERVIEW",
+      "Tokopedia Official Store collaborated with PVRA, AVA, and Kami. to present a fashion video around the theme of women empowerment. Collections from the participating local brands were woven into a story that doesn't just showcase products, but celebrates the many ways women express themselves.",
+      "With Raline Shah as the muse, the campaign uses fashion as a medium to say that every woman is free to choose, express, and define herself in her own way.",
+      "CREATIVE APPROACH",
+      "Raline Shah was chosen to represent “beauty with brain”: a woman with character, ideas, and the courage to make her own choices. Raline acts as the narrator, taking viewers into a story about confidence, individuality, and freedom of expression.",
+      "The variety of collections from each brand was then positioned to represent the many choices and characters of women. Rather than simply showing a fashion catalog, each look becomes part of a narrative about the courage to be yourself amid life's many choices."
+    ]
+  },
+  "work-saski-2": {
+    "summary": "Redesigning a grief companion app to create a more personal and supportive space for users as they face loss, keep their memories, and work through their feelings.",
+    "body": [
+      "This project revisits the experience of a grief companion app, focusing on how technology can help someone go through grief in a more personal and caring way.",
+      "Rather than seeing grief as a linear process, we explored how the app could offer a safe space for users to remember, reflect, and face their feelings in their own way and at their own pace. The redesign covered refining the existing experience as well as developing several new features, so the app feels closer, easier to use, and emotionally supportive.",
+      "The core experience of the app is built around several parts, from <strong>Entering the App</strong> as a gentler starting point for users, to <strong>Memory Room</strong> as a space to keep and revisit memories, and <strong>Coping Journal</strong> as a private space to write down and work through feelings.",
+      "In this project, we considered not only usability, but also how a digital product can respond to its users' emotional context. Every decision about interaction, language, and visuals was designed with how the experience could feel safer, more comfortable, and more human in mind."
+    ]
+  }
+}

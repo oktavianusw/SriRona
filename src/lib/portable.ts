@@ -12,8 +12,9 @@ const escape = (text: string) => text.replace(/&/g, '&amp;').replace(/</g, '&lt;
 const safeHref = (href = '') => (/^(https?:|mailto:)/i.test(href) ? escape(href) : '#');
 
 /** Portable Text paragraphs → one HTML string per paragraph (strong, em, links only). */
-export function blocksToHtml(blocks: Block[] = []): string[] {
-	return blocks
+export function blocksToHtml(blocks?: Block[] | null): string[] {
+	// GROQ returns null (not undefined) for an empty field.
+	return (blocks ?? [])
 		.filter((block) => block._type === 'block' && block.children?.length)
 		.map((block) =>
 			block

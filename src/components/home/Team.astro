@@ -2,31 +2,55 @@
 import { Image } from 'astro:assets';
 import Chip from '../Chip.astro';
 import { team } from '../../data/team';
+import { langOf, useT } from '../../i18n';
+
+const t = useT(Astro);
 ---
 
 <section class="team">
 	<div class="intro">
 		<Chip>Team</Chip>
-		<h2 class="t-h2">Salam Kenal dari SriRona!</h2>
-		<p class="t-body-l">
-			Kami adalah studio kreatif kolektif yang tumbuh dari rasa ingin tahu serta pengalaman di ranah desain dan komunikasi strategis.
-			Kami percaya bahwa produk digital terbaik tidak hanya mengandalkan teknologi untuk mencapai tujuan, tetapi juga harus mampu
-			menyentuh sisi manusiawi penggunanya.
-		</p>
-		<p class="t-body-l">
-			Tim inti kami memang ramping. Namun, kami bersinergi dengan para spesialis lintas industri: seperti developer, researcher,
-			ilustrator, dan penulis terpercaya. Karena bagi kami, solusi terbaik lahir dari pertukaran pikiran yang terbuka, bukan dari satu
-			meja kerja yang kaku.
-		</p>
-		<p class="t-body-l">
-			Bekerja secara remote dari Bandung, Tangerang, dan Yogyakarta, kami membuka ruang kerja sama bagi para pendiri bisnis, marketer,
-			maupun organisasi yang sedang merintis hal baru, mengembangkan bisnis, atau sekadar mencari arah. Mari luangkan waktu untuk
-			mengobrol santai seputar produk dan desain. <strong>Tanpa tuntutan, tanpa tekanan</strong>.
-		</p>
+		<h2 class="t-h2">{t('Salam Kenal dari SriRona!', 'Hello from SriRona!')}</h2>
+		{langOf(Astro) === 'en' ? (
+			<>
+				<p class="t-body-l">
+					We are a creative collective that grew out of curiosity and experience in design and strategic communication. We believe
+					the best digital products don't rely on technology alone to reach their goals; they also have to touch the human side of
+					the people who use them.
+				</p>
+				<p class="t-body-l">
+					Our core team is lean. But we work alongside specialists across industries, such as trusted developers, researchers,
+					illustrators, and writers. For us, the best solutions come from an open exchange of ideas, not from one rigid desk.
+				</p>
+				<p class="t-body-l">
+					Working remotely from Bandung, Tangerang, and Yogyakarta, we're open to working with founders, marketers, and
+					organizations who are starting something new, growing a business, or simply looking for direction. Let's take some time
+					for a relaxed chat about products and design. <strong>No demands, no pressure</strong>.
+				</p>
+			</>
+		) : (
+			<>
+				<p class="t-body-l">
+					Kami adalah studio kreatif kolektif yang tumbuh dari rasa ingin tahu serta pengalaman di ranah desain dan komunikasi strategis.
+					Kami percaya bahwa produk digital terbaik tidak hanya mengandalkan teknologi untuk mencapai tujuan, tetapi juga harus mampu
+					menyentuh sisi manusiawi penggunanya.
+				</p>
+				<p class="t-body-l">
+					Tim inti kami memang ramping. Namun, kami bersinergi dengan para spesialis lintas industri: seperti developer, researcher,
+					ilustrator, dan penulis terpercaya. Karena bagi kami, solusi terbaik lahir dari pertukaran pikiran yang terbuka, bukan dari satu
+					meja kerja yang kaku.
+				</p>
+				<p class="t-body-l">
+					Bekerja secara remote dari Bandung, Tangerang, dan Yogyakarta, kami membuka ruang kerja sama bagi para pendiri bisnis, marketer,
+					maupun organisasi yang sedang merintis hal baru, mengembangkan bisnis, atau sekadar mencari arah. Mari luangkan waktu untuk
+					mengobrol santai seputar produk dan desain. <strong>Tanpa tuntutan, tanpa tekanan</strong>.
+				</p>
+			</>
+		)}
 	</div>
 	<ul class="members">
 		{
-			team.map(({ name, role, photo, bio }) => (
+			team.map(({ name, role, photo, bio, bioEn }) => (
 				<li>
 					<Image class="photo" src={photo} alt={name} width={286} />
 					<h3 class="t-subtitle-m">
@@ -34,7 +58,7 @@ import { team } from '../../data/team';
 						<span class="dash"> - </span>
 						<span>{role}</span>
 					</h3>
-					<p class="t-body-l">{bio}</p>
+					<p class="t-body-l">{t(bio, bioEn)}</p>
 				</li>
 			))
 		}

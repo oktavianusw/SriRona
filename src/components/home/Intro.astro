@@ -1,8 +1,21 @@
+---
+import { langOf } from '../../i18n';
+---
+
 <section class="intro">
-	<h2 class="t-h2">
-		<strong>Pikiran, rasa, dan kehendak</strong> adalah kompas kami dalam melahirkan solusi kreatif yang berdampak untuk organisasimu.
-		Memadukan fungsi, estetika, dan interaksi yang manusiawi.
-	</h2>
+	{
+		langOf(Astro) === 'en' ? (
+			<h2 class="t-h2">
+				<strong>Thought, feeling, and will</strong> are the compass that guides us to creative solutions that make an impact for your
+				organization. Blending function, aesthetics, and human-centered interaction.
+			</h2>
+		) : (
+			<h2 class="t-h2">
+				<strong>Pikiran, rasa, dan kehendak</strong> adalah kompas kami dalam melahirkan solusi kreatif yang berdampak untuk organisasimu.
+				Memadukan fungsi, estetika, dan interaksi yang manusiawi.
+			</h2>
+		)
+	}
 </section>
 
 <style>

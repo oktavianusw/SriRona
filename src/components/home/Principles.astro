@@ -1,14 +1,17 @@
 ---
 import { principles } from '../../data/principles';
+import { useT } from '../../i18n';
+
+const t = useT(Astro);
 ---
 
 <section class="principles">
-	<h2 class="t-h1b">Prinsip Desain</h2>
+	<h2 class="t-h1b">{t('Prinsip Desain', 'Design Principles')}</h2>
 	{
-		principles.map(({ title, text }) => (
+		principles.map(({ title, titleEn, text, textEn }) => (
 			<div class="item">
-				<h3 class="t-subtitle-l">{title}</h3>
-				<p class="t-body-l">{text}</p>
+				<h3 class="t-subtitle-l">{t(title, titleEn)}</h3>
+				<p class="t-body-l">{t(text, textEn)}</p>
 			</div>
 		))
 	}

@@ -5,4 +5,5 @@ export default defineCliConfig({
 	api: { projectId: SANITY_PROJECT_ID, dataset: SANITY_DATASET },
 	// Studio is hosted at https://srirona.sanity.studio (`pnpm studio:deploy`).
 	studioHost: 'srirona',
+	deployment: { appId: 'jfaj8t2hfhu9qwhzzns9ev5d' },
 });

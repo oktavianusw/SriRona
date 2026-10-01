@@ -1,5 +1,28 @@
 import { defineArrayMember, defineField, defineType } from 'sanity';
 
+// Paragraphs with bold, italic and links; shared by the Indonesian and English body.
+const paragraphs = [
+	defineArrayMember({
+		type: 'block',
+		styles: [{ title: 'Paragraf', value: 'normal' }],
+		lists: [],
+		marks: {
+			decorators: [
+				{ title: 'Tebal', value: 'strong' },
+				{ title: 'Miring', value: 'em' },
+			],
+			annotations: [
+				{
+					name: 'link',
+					type: 'object',
+					title: 'Link',
+					fields: [defineField({ name: 'href', type: 'url', title: 'URL', validation: (rule) => rule.uri({ scheme: ['http', 'https', 'mailto'] }) })],
+				},
+			],
+		},
+	}),
+];
+
 export const work = defineType({
 	name: 'work',
 	title: 'Karya',
@@ -42,6 +65,13 @@ export const work = defineType({
 			rows: 3,
 		}),
 		defineField({
+			name: 'summaryEn',
+			title: 'Ringkasan (English)',
+			description: 'Opsional. Tampil di versi bahasa Inggris (/en). Kosong = pakai ringkasan bahasa Indonesia.',
+			type: 'text',
+			rows: 3,
+		}),
+		defineField({
 			name: 'author',
 			title: 'Penulis / tim',
 			description: 'Nama yang tampil di label. Kalau lebih dari satu, pisahkan dengan " · ".',
@@ -67,27 +97,14 @@ export const work = defineType({
 			title: 'Isi (Overview)',
 			description: 'Paragraf di bawah judul "Overview". Bisa tebal, miring, dan link.',
 			type: 'array',
-			of: [
-				defineArrayMember({
-					type: 'block',
-					styles: [{ title: 'Paragraf', value: 'normal' }],
-					lists: [],
-					marks: {
-						decorators: [
-							{ title: 'Tebal', value: 'strong' },
-							{ title: 'Miring', value: 'em' },
-						],
-						annotations: [
-							{
-								name: 'link',
-								type: 'object',
-								title: 'Link',
-								fields: [defineField({ name: 'href', type: 'url', title: 'URL', validation: (rule) => rule.uri({ scheme: ['http', 'https', 'mailto'] }) })],
-							},
-						],
-					},
-				}),
-			],
+			of: paragraphs,
+		}),
+		defineField({
+			name: 'bodyEn',
+			title: 'Isi (Overview, English)',
+			description: 'Opsional. Tampil di versi bahasa Inggris (/en). Kosong = pakai isi bahasa Indonesia.',
+			type: 'array',
+			of: paragraphs,
 		}),
 		defineField({
 			name: 'gallery',

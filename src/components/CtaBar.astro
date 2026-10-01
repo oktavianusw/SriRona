@@ -1,12 +1,14 @@
 ---
 import Button from './Button.astro';
 import { EMAIL_URL } from '../consts';
+import { useT } from '../i18n';
 
 interface Props {
 	title: string;
 	text: string;
 }
 const { title, text } = Astro.props;
+const t = useT(Astro);
 ---
 
 <div class="cta">
@@ -14,7 +16,7 @@ const { title, text } = Astro.props;
 		<p class="t-body-m-strong">{title}</p>
 		<p class="t-body-s">{text}</p>
 	</div>
-	<Button href={EMAIL_URL} label="Diskusikan sekarang" size="lg" variant="secondary" />
+	<Button href={EMAIL_URL} label={t('Diskusikan sekarang', "Let's talk")} size="lg" variant="secondary" />
 </div>
 
 <style>

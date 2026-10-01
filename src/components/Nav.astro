@@ -2,15 +2,24 @@
 import Button from './Button.astro';
 import Logo from './Logo.astro';
 import { EMAIL_URL } from '../consts';
+import { basePath, langOf, localePath, useT } from '../i18n';
 
+const t = useT(Astro);
+const lang = langOf(Astro);
 const links = [
-	{ href: '/work', label: 'Karya' },
-	{ href: '/about', label: 'Tentang kami' },
-	{ href: '/contact', label: 'Kontak' },
+	{ href: '/work', label: t('Karya', 'Work') },
+	{ href: '/about', label: t('Tentang kami', 'About us') },
+	{ href: '/contact', label: t('Kontak', 'Contact') },
 ];
+// The switcher links to this same page in the other language.
+const base = basePath(Astro.url.pathname);
+const langs = [
+	{ code: 'id', label: 'ID', name: 'Bahasa Indonesia' },
+	{ code: 'en', label: 'EN', name: 'English' },
+] as const;
 ---
 
-<nav class="nav" aria-label="Utama">
+<nav class="nav" aria-label={t('Utama', 'Main')}>
 	<div class="bar">
 		<Logo class="nav-logo" />
 		<button class="toggle" type="button" aria-expanded="false" aria-controls="nav-menu">
@@ -25,7 +34,7 @@ const links = [
 				{
 					links.map(({ href, label }) => (
 						<li>
-							<a class="link t-body-s" href={href}>
+							<a class="link t-body-s" href={localePath(href, lang)}>
 								<span class="roll">
 									<span data-text={label}>{label}</span>
 								</span>
@@ -34,7 +43,18 @@ const links = [
 					))
 				}
 			</ul>
-			<Button href={EMAIL_URL} label="Diskusikan sekarang" size="sm" />
+			<ul class="langs t-body-s-strong" aria-label={t('Bahasa', 'Language')}>
+				{
+					langs.map(({ code, label, name }) => (
+						<li>
+							<a href={localePath(base, code)} hreflang={code} lang={code} aria-label={name} aria-current={code === lang ? 'true' : undefined}>
+								{label}
+							</a>
+						</li>
+					))
+				}
+			</ul>
+			<Button href={EMAIL_URL} label={t('Diskusikan sekarang', "Let's talk")} size="sm" />
 		</div>
 	</div>
 </nav>
@@ -80,6 +100,28 @@ const links = [
 	}
 	.toggle {
 		display: none;
+	}
+	.langs {
+		display: flex;
+		gap: 2px;
+		padding: 2px;
+		border-radius: 10px;
+		background: var(--neutral-03);
+	}
+	.langs a {
+		display: block;
+		padding: 4px 8px;
+		border-radius: 8px;
+		color: var(--neutral-07);
+		transition: color 0.2s var(--ease);
+	}
+	.langs a:hover {
+		color: var(--neutral-08);
+	}
+	.langs [aria-current] {
+		background: var(--neutral-01);
+		color: var(--neutral-08);
+		box-shadow: 0 1px 2px var(--neutral-08-20);
 	}
 
 	@media (max-width: 1199px) {

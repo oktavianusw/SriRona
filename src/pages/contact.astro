@@ -1,21 +1,38 @@
 ---
+import { EMAIL_URL, WEB3FORMS_KEY } from '../consts';
 import Faq from '../components/Faq.astro';
 import Base from '../layouts/Base.astro';
+import { useT } from '../i18n';
 
-const intro = 'Ceritakan kebutuhan kreatifmu, kami siap bersama-sama temukan solusi terbaiknya.';
+const t = useT(Astro);
+const intro = t(
+	'Ceritakan kebutuhan kreatifmu, kami siap bersama-sama temukan solusi terbaiknya.',
+	"Tell us about your creative needs, and let's find the best solution together.",
+);
+// Status messages for the form script, in the page's language.
+const messages = {
+	thanks: t('Terima kasih!', 'Thank you!'),
+	received: t('Pesanmu sudah kami terima.', 'We have received your message.'),
+	sent: t('Pesanmu sudah terkirim. Kami akan membalas lewat email secepatnya.', "Your message is on its way. We'll reply by email as soon as we can."),
+	inactive: t('Formulir belum aktif', 'This form is not active yet'),
+	inactiveText: t('Sementara, kirim pesanmu langsung ke', 'For now, please send your message directly to'),
+	failed: t('Pesan belum terkirim', "Your message wasn't sent"),
+	failedText: t('Coba lagi sebentar lagi, atau kirim langsung ke', 'Please try again shortly, or send it directly to'),
+};
 ---
 
-<Base title="Kontak" description={intro}>
+<Base title={t('Kontak', 'Contact')} description={intro}>
 	<div class="page">
 		<header>
 			<h1>
-				<span class="t-h1b" data-appear>Tertarik</span>
-				<span class="t-h1 accent" data-appear style="--appear-delay: 0.2s">Berdiskusi?</span>
+				<span class="t-h1b" data-appear>{t('Tertarik', 'Up for')}</span>
+				<span class="t-h1 accent" data-appear style="--appear-delay: 0.2s">{t('Berdiskusi?', 'a Chat?')}</span>
 			</h1>
 			<p class="t-body-m" data-appear style="--appear-delay: 0.4s">{intro}</p>
 		</header>
 		<div class="form-card">
-			<form method="post" novalidate>
+			<form method="post" data-key={WEB3FORMS_KEY} data-messages={JSON.stringify(messages)}>
+				<div class="fields">
 				<label>
 					<span class="t-body-m-strong">Name</span>
 					<input type="text" name="name" placeholder="Enter your name" autocomplete="name" required />
@@ -37,11 +54,74 @@ const intro = 'Ceritakan kebutuhan kreatifmu, kami siap bersama-sama temukan sol
 				<button class="submit t-body-m-strong" type="submit">
 					<span class="roll"><span data-text="Submit">Submit</span></span>
 				</button>
+				</div>
+				<div class="status t-body-m" role="status" aria-live="polite" tabindex="-1" hidden>
+					<p class="status-title t-subtitle-m"></p>
+					<p class="status-text"></p>
+					<a class="status-mail" href={EMAIL_URL} hidden>studiosrirona@gmail.com</a>
+				</div>
 			</form>
 		</div>
 	</div>
 	<Faq />
 </Base>
+
+<script>
+	const form = document.querySelector<HTMLFormElement>('.form-card form')!;
+	const button = form.querySelector<HTMLButtonElement>('.submit')!;
+	const label = button.querySelector<HTMLElement>('.roll > span')!;
+	const status = form.querySelector<HTMLElement>('.status')!;
+	const [title, text] = status.querySelectorAll<HTMLElement>('p');
+	const mail = status.querySelector<HTMLElement>('.status-mail')!;
+	const m = JSON.parse(form.dataset.messages!) as Record<string, string>;
+
+	const show = (kind: 'sent' | 'error', heading: string, body: string) => {
+		// Keep the card's height when the fields hide, so the page doesn't jump.
+		if (kind === 'sent') form.style.minHeight = `${form.offsetHeight}px`;
+		form.dataset.state = kind;
+		title.textContent = heading;
+		text.textContent = body;
+		mail.hidden = kind !== 'error';
+		status.hidden = false;
+		status.focus();
+	};
+
+	form.addEventListener('submit', async (event) => {
+		event.preventDefault();
+		const data = new FormData(form);
+		// Honeypot: a bot filled the hidden field. Pretend it worked, send nothing.
+		if (data.get('website')) return show('sent', m.thanks, m.received);
+
+		const key = form.dataset.key;
+		if (!key) return show('error', m.inactive, m.inactiveText);
+
+		button.disabled = true;
+		label.textContent = 'Sending…';
+		try {
+			const response = await fetch('https://api.web3forms.com/submit', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+				body: JSON.stringify({
+					access_key: key,
+					subject: 'Pesan baru dari website SriRona',
+					from_name: 'Website SriRona',
+					name: data.get('name'),
+					email: data.get('email'),
+					phone: data.get('phone') || '-',
+					message: data.get('message'),
+				}),
+			});
+			const result = await response.json();
+			if (!response.ok || !result.success) throw new Error(result.message);
+			form.reset();
+			show('sent', m.thanks, m.sent);
+		} catch {
+			show('error', m.failed, m.failedText);
+			button.disabled = false;
+			label.textContent = 'Submit';
+		}
+	});
+</script>
 
 <style>
 	.page {
@@ -145,6 +225,45 @@ const intro = 'Ceritakan kebutuhan kreatifmu, kami siap bersama-sama temukan sol
 		border: 0;
 		opacity: 0;
 		pointer-events: none;
+	}
+	.fields {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+	/* After a successful send only the message shows; on error the fields stay so the visitor can retry. */
+	form[data-state='sent'] .fields {
+		display: none;
+	}
+	form[data-state='sent'] {
+		justify-content: center;
+	}
+	.status {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		padding: 40px 12px;
+		text-align: center;
+		outline: none;
+	}
+	.status[hidden] {
+		display: none;
+	}
+	form[data-state='error'] .status {
+		padding: 0 4px;
+		text-align: left;
+	}
+	.status-title {
+		color: var(--neutral-08);
+	}
+	.status-mail {
+		color: var(--neutral-08);
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+	.submit:disabled {
+		opacity: 0.6;
+		cursor: progress;
 	}
 	.submit {
 		display: flex;

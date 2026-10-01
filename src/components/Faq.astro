@@ -2,7 +2,12 @@
 import Chip from './Chip.astro';
 import CtaBar from './CtaBar.astro';
 import Plus from '../icons/plus.svg';
-import faqs from '../data/faqs.json';
+import faqsId from '../data/faqs.json';
+import faqsEn from '../data/faqs.en.json';
+import { langOf, useT } from '../i18n';
+
+const t = useT(Astro);
+const faqs = langOf(Astro) === 'en' ? faqsEn : faqsId;
 ---
 
 <section class="faq">
@@ -33,7 +38,10 @@ import faqs from '../data/faqs.json';
 					</div>
 				))
 			}
-			<CtaBar title="Masih ada pertanyaan?" text="Jangan ragu untuk sapa kami lewat email atau DM instagram." />
+			<CtaBar
+				title={t('Masih ada pertanyaan?', 'Still have questions?')}
+				text={t('Jangan ragu untuk sapa kami lewat email atau DM instagram.', 'Feel free to reach us by email or Instagram DM.')}
+			/>
 		</div>
 	</div>
 </section>

@@ -5,27 +5,57 @@ import CtaBar from '../components/CtaBar.astro';
 import { principles } from '../data/principles';
 import { team } from '../data/team';
 import Base from '../layouts/Base.astro';
+import { langOf, useT } from '../i18n';
+
+const t = useT(Astro);
+const en = langOf(Astro) === 'en';
 ---
 
-<Base title="Tentang Kami" description="Studio kreatif kolektif dari Bandung, Tangerang, dan Yogyakarta. Kenali tim dan prinsip desain SriRona.">
+<Base
+	title={t('Tentang Kami', 'About Us')}
+	description={t(
+		'Studio kreatif kolektif dari Bandung, Tangerang, dan Yogyakarta. Kenali tim dan prinsip desain SriRona.',
+		'A creative collective based in Bandung, Tangerang, and Yogyakarta. Meet the SriRona team and our design principles.',
+	)}
+>
 	<section class="hero">
 		<div class="hero-inner">
 			<h1 class="t-h1b">
-				{['Kolaborasi', 'lintas', 'disiplin', 'kreatif,', 'hadirkan desain'].map((words) => <><span>{words}</span> </>)}
-				<span class="accent t-h1 from-tablet">yang intuitif.</span>
-				<span class="accent t-h1 phone-only">dalam alur kerjamu.</span>
+				{(en ? ['Creative minds', 'across disciplines,', 'shaping design'] : ['Kolaborasi', 'lintas', 'disiplin', 'kreatif,', 'hadirkan desain']).map((words) => <><span>{words}</span> </>)}
+				<span class="accent t-h1 from-tablet">{t('yang intuitif.', 'that feels intuitive.')}</span>
+				<span class="accent t-h1 phone-only">{t('dalam alur kerjamu.', 'for your workflow.')}</span>
 			</h1>
 			<p class="t-body-m">
-				Kami menggabungkan berbagai keahlian kreatif untuk memahami konteks organisasimu, menjawab kebutuhan pengguna, dan merancang
-				solusi yang tepat guna.
+				{t(
+					'Kami menggabungkan berbagai keahlian kreatif untuk memahami konteks organisasimu, menjawab kebutuhan pengguna, dan merancang solusi yang tepat guna.',
+					"We bring together a range of creative skills to understand your organization's context, meet your users' needs, and design solutions that truly fit.",
+				)}
 			</p>
 		</div>
 	</section>
 
 	<div class="body">
 		<section class="about">
-			<Chip>Tentang Kami</Chip>
-			<h2 class="t-h2">Salam Kenal dari SriRona!</h2>
+			<Chip>{t('Tentang Kami', 'About Us')}</Chip>
+			<h2 class="t-h2">{t('Salam Kenal dari SriRona!', 'Hello from SriRona!')}</h2>
+			{en ? (
+			<div class="copy">
+				<p>
+					We are a creative collective that grew out of curiosity and experience in design and strategic communication. We believe
+					the best digital products don't rely on technology alone to reach their goals; they also have to touch the human side of
+					the people who use them.
+				</p>
+				<p>
+					Our core team is lean. But we work alongside specialists across industries—such as trusted developers, researchers,
+					illustrators, and writers. For us, the best solutions come from an open exchange of ideas, not from one rigid desk.
+				</p>
+				<p>
+					Working remotely from Bandung, Tangerang, and Yogyakarta, we're open to working with founders, marketers, and
+					organizations who are starting something new, growing a business, or simply looking for direction. Let's take some time
+					for a relaxed chat about products and design. <strong>No demands, no pressure</strong>.
+				</p>
+			</div>
+			) : (
 			<div class="copy">
 				<p>
 					Kami adalah studio kreatif kolektif yang tumbuh dari rasa ingin tahu serta pengalaman di ranah desain dan komunikasi
@@ -43,24 +73,25 @@ import Base from '../layouts/Base.astro';
 					waktu untuk mengobrol santai seputar produk dan desain. <strong>Tanpa tuntutan, tanpa tekanan</strong>.
 				</p>
 			</div>
+			)}
 		</section>
 
 		<section class="block">
 			<div class="block-head">
-				<Chip>Pandangan Kami</Chip>
-				<h2 class="t-h2">Prinsip Desain</h2>
+				<Chip>{t('Pandangan Kami', 'Our Outlook')}</Chip>
+				<h2 class="t-h2">{t('Prinsip Desain', 'Design Principles')}</h2>
 			</div>
 			<ul class="values">
 				{
-					principles.map(({ title, text, tag, icon: Icon, background, accent }) => (
+					principles.map(({ title, titleEn, text, textEn, tag, icon: Icon, background, accent }) => (
 						<li style={`background: ${background}; --accent: ${accent}`}>
 							<div class="value-body">
 								<span class="value-icon">
 									<Icon aria-hidden="true" />
 								</span>
 								<div>
-									<h3 class="t-subtitle-m">{title}</h3>
-									<p>{text}</p>
+									<h3 class="t-subtitle-m">{t(title, titleEn)}</h3>
+									<p>{t(text, textEn)}</p>
 								</div>
 							</div>
 							<span class="tag">{tag}</span>
@@ -72,10 +103,10 @@ import Base from '../layouts/Base.astro';
 
 		<section class="block">
 			<div class="block-head">
-				<Chip>Tim Kami</Chip>
+				<Chip>{t('Tim Kami', 'Our Team')}</Chip>
 				<h2 class="t-h2">
-					<span class="line-1">Tim kecil, semangat besar.</span>
-					<span class="line-2">Berkreasi dengan intensi dan atensi.</span>
+					<span class="line-1">{t('Tim kecil, semangat besar.', 'Small team, big spirit.')}</span>
+					<span class="line-2">{t('Berkreasi dengan intensi dan atensi.', 'Creating with intention and attention.')}</span>
 				</h2>
 			</div>
 			<div class="team-wrap">
@@ -92,7 +123,10 @@ import Base from '../layouts/Base.astro';
 						))
 					}
 				</ul>
-				<CtaBar title="Butuh diskusikan proyek kreatifmu?" text="Kami bantu, dari brainstorming s.d. eksekusi." />
+				<CtaBar
+				title={t('Butuh diskusikan proyek kreatifmu?', 'Want to talk through your creative project?')}
+				text={t('Kami bantu, dari brainstorming s.d. eksekusi.', 'We can help, from brainstorming to execution.')}
+			/>
 			</div>
 		</section>
 	</div>

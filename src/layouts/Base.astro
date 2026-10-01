@@ -4,19 +4,25 @@ import '../styles/global.css';
 import Footer from '../components/Footer.astro';
 import Nav from '../components/Nav.astro';
 import { SITE_DESCRIPTION, SITE_NAME } from '../consts';
+import { basePath, langOf, localePath, useT } from '../i18n';
 import ogImage from '../assets/framer/2X9s7JWtP5OpV9ZS27qs4v1Bk.png';
 
 interface Props {
 	title?: string;
 	description?: string;
 }
-const { title, description = SITE_DESCRIPTION } = Astro.props;
+const t = useT(Astro);
+const lang = langOf(Astro);
+const { title, description = t(SITE_DESCRIPTION, 'A collaborative design studio, creating with intention.') } = Astro.props;
 const fullTitle = title ? `${title} — ${SITE_NAME}` : SITE_NAME;
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefined;
+// Same page in each language, for search engines (hreflang).
+const base = basePath(Astro.url.pathname);
+const alternates = Astro.site ? (['id', 'en'] as const).map((l) => ({ lang: l, href: new URL(localePath(base, l), Astro.site) })) : [];
 ---
 
 <!doctype html>
-<html lang="id">
+<html lang={lang}>
 	<head>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -25,6 +31,9 @@ const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefin
 		<title>{fullTitle}</title>
 		<meta name="description" content={description} />
 		{canonical && <link rel="canonical" href={canonical} />}
+		{alternates.map((a) => <link rel="alternate" hreflang={a.lang} href={a.href} />)}
+		{alternates[0] && <link rel="alternate" hreflang="x-default" href={alternates[0].href} />}
+		<meta property="og:locale" content={t('id_ID', 'en_US')} />
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content={fullTitle} />
 		<meta property="og:description" content={description} />

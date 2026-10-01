@@ -5,6 +5,9 @@ import cardImage from '../../assets/framer/r5im6CLwcJCXTQgqTINZLUoM.jpeg';
 import videoMp4 from '../../assets/framer/MLWPbW1dUQawJLhhun3dBwpgJak.mp4';
 import videoWebm from '../../assets/framer/nmdRhWLNFqQ8e7XZGmy9kpXqo.webm';
 import { EMAIL_URL } from '../../consts';
+import { useT } from '../../i18n';
+
+const t = useT(Astro);
 ---
 
 <section class="hero" id="hero">
@@ -18,17 +21,17 @@ import { EMAIL_URL } from '../../consts';
 		<div class="header" data-appear>
 			<p class="eyebrow t-body-s-strong">
 				<SunHorizon aria-hidden="true" />
-				Strategi brand. Komunikasi. Desain layanan digital
+				{t('Strategi brand. Komunikasi. Desain layanan digital', 'Brand strategy. Communication. Digital service design')}
 			</p>
 			<h1 class="t-h1b">
-				{'Ciptakan solusi desain yang berdampak dan'.split(' ').map((word) => <><span>{word}</span> </>)}
-				<span class="accent t-h1">bermakna</span>
+				{t('Ciptakan solusi desain yang berdampak dan', 'Create design solutions that are impactful and').split(' ').map((word) => <><span>{word}</span> </>)}
+				<span class="accent t-h1">{t('bermakna', 'meaningful')}</span>
 			</h1>
 		</div>
 		<div class="bottom">
-			<p class="t-body-l">Hubungkan tujuan organisasimu dengan pengguna lewat kreativitas & empati.</p>
+			<p class="t-body-l">{t('Hubungkan tujuan organisasimu dengan pengguna lewat kreativitas & empati.', "Connect your organization's goals with its users through creativity & empathy.")}</p>
 			<a class="cta" href={EMAIL_URL}>
-				<span class="t-body-s-strong">Diskusikan sekarang</span>
+				<span class="t-body-s-strong">{t('Diskusikan sekarang', "Let's talk")}</span>
 				<span class="cta-image">
 					<Image src={cardImage} alt="" width={472} loading="eager" />
 				</span>

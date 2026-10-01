@@ -63,10 +63,10 @@ Project Sanity: **SriRona**, ID `48dbdtpq`, dataset `production` (publik untuk b
 - [x] Skema "Karya" (`studio/schemaTypes/work.ts`), Studio (`sanity.config.ts`, host `srirona.sanity.studio`)
 - [x] Situs membaca karya dari Sanity saat build (`src/data/works.ts`); `/work`, `/work/[slug]` dan "Explore more" dari data CMS
 - [x] Data 6 karya + gambar disiapkan untuk impor (`studio/seed/`), konversi teks diuji tanpa selisih
-- [ ] **Impor 6 karya ke Sanity** (butuh `sanity login`, lihat di bawah)
-- [ ] **Deploy Studio** (`pnpm studio:deploy`)
+- [x] Impor 6 karya ke Sanity (terverifikasi di dataset dan di situs produksi)
+- [x] Deploy Studio → https://srirona.sanity.studio
 - [ ] Undang tim studio sebagai Editor
-- [ ] Webhook Sanity → Vercel (rebuild otomatis saat Publish)
+- [x] Webhook Sanity → Vercel dibuat (uji end-to-end: Publish sebuah perubahan lalu pastikan deployment baru muncul)
 - **Cek:** ubah karya di Studio → Publish → situs produksi berubah dalam 1–2 menit
 
 Perintah (dari root project):
@@ -84,8 +84,10 @@ Sebelum push ke Vercel, impor dulu: situs tidak lagi membaca karya dari file, ja
 Webhook rebuild: Vercel → Settings → Git → **Deploy Hooks** → buat hook (branch `main`) → salin URL. Sanity (sanity.io/manage → API → **Webhooks**) → Create: URL = URL hook tadi, dataset `production`, trigger Create/Update/Delete, filter `_type == "work"`, method POST, projection kosong.
 
 ### Fase 5 — Form kontak
-Butuh: keputusan backend form.
-- [ ] Sambungkan form + validasi + state sukses/gagal + anti-spam
+Pakai Web3Forms (gratis, 250 kiriman/bulan, langsung ke email studio).
+- [x] Form dikirim lewat JS: validasi bawaan browser, status "Sending…", pesan sukses, pesan gagal (isian tetap ada, ada link email cadangan), honeypot anti-spam. Diuji dengan request yang dicegat (sukses, gagal, key kosong, honeypot).
+- [ ] **Isi access key** di `src/consts.ts` (`WEB3FORMS_KEY`): buat di web3forms.com dengan email `studiosrirona@gmail.com`. Selama kosong, form menampilkan "Formulir belum aktif" + link email.
+- [ ] Uji kirim sungguhan sekali dari situs produksi, pastikan email masuk (cek juga folder spam)
 - **Cek:** kirim form uji → pesan sampai ke email studio
 
 ### Fase 6 — QA
@@ -103,10 +105,18 @@ Butuh: repo GitHub, akun Vercel, domain.
 - [ ] Panduan singkat untuk tim studio: cara tambah/ubah karya
 - **Cek:** publish di Sanity → tayang di situs produksi tanpa developer
 
+## Dua bahasa (ID / EN)
+
+- Indonesia di root (`/work`), Inggris di `/en` (`/en/work`). Tombol ID/EN di navbar membuka halaman yang sama dalam bahasa lain; `hreflang` + `<html lang>` ikut.
+- Halaman EN di `src/pages/en/` hanya membungkus halaman ID yang sama; teks dipilih lewat `t('teks ID', 'English text')` dari `src/i18n.ts`. Ubah copy = ubah kedua teks di tempat yang sama.
+- Teks panjang: `faqs.en.json`, `textEn`/`titleEn` di `principles.ts`, `bioEn` di `team.ts`.
+- Karya (Sanity): field opsional **Ringkasan (English)** dan **Isi (Overview, English)**. Kosong = versi EN memakai teks Indonesia. Terjemahan awal 6 karya di `studio/seed/works.en.json`; isi ke Sanity dengan `pnpm sanity exec studio/seed/patch-en.mjs --with-user-token` (hanya mengisi field yang masih kosong). Setelah skema berubah, deploy ulang Studio (`pnpm studio:deploy`) agar field barunya muncul.
+- Yang sengaja tidak diterjemahkan: Privacy/Terms (sudah bahasa Inggris, template Framer), 404, label form kontak (sudah bahasa Inggris), label yang memang bahasa Inggris di Framer (nama layanan, tag, footer).
+- "Diskusikan sekarang" → "Let's talk".
+
 ## Belum diputuskan
 
 - Domain (sekarang masih `*.framer.website`)
-- Backend form kontak (sekarang pakai form bawaan Framer; form di sini belum terhubung)
 - Slug karya: tetap pakai nama orang (`/work/saski`) atau ganti ke nama proyek (butuh redirect)
 
 ## Responsive HP (dicek 2026-09-30)
@@ -121,6 +131,8 @@ Dibandingkan dengan Framer di 390, 430, 600, 767px (292 teks: lebar, posisi, uku
 - **Link Live Preview sudah diganti** dengan link asli dari dokumen klien (Formulatrix, Torico, KitaLulus → Behance/Framer; Tokopedia Official Store → file Google Drive; Grief → Framer). Tokopedia S.O.S Promo sengaja tanpa link, jadi tombolnya tidak tampil. Link Google Drive harus disetel "siapa saja dengan link" agar bisa dibuka pengunjung.
 - **Privacy Policy & Terms of Service = template bawaan Framer** (bahasa Inggris, menyebut "Pulma", tanggal 9 April 2026), bukan teks SriRona. Disalin apa adanya; sebaiknya diganti sebelum rilis.
 - Halaman 404 dan form kontak masih berbahasa Inggris ("This page isn’t here.", "Enter your name", "Submit"). Tombol "Back to Home" di Framer mengarah ke WhatsApp; di sini diarahkan ke `/`.
+- **Tokopedia Official Store x PVRA x AVA x Kami tidak punya gambar galeri** (di Framer juga kosong; Framer tetap menyisakan jarak 200px kosong, di sini jarak itu dihilangkan). Tambahkan gambarnya lewat Studio kalau ada.
+- Link Behance (Torico, KitaLulus) menolak pengecekan otomatis (403 untuk bot); buka manual di browser untuk memastikan.
 - Tanggal karya ganjil ("Dec 1, 2019", "Jan 1, 2019"…), tampaknya placeholder.
 - Typo di konten: "Copywriitng", "CMS intergration", "eksekusi konsiten".
 

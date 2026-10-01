@@ -11,13 +11,18 @@ import productImage from '../../assets/framer/qtsirRyhQ2WXZYzqmQXtvwceUU.png';
 import brandingImage from '../../assets/framer/rXQyZ5gfkFbYFK2aelAPoXDGcEU.jpeg';
 import writingImage from '../../assets/framer/sUSIZmAbSqSCVq6tqegHSC8.jpeg';
 import developerImage from '../../assets/framer/jvZC46OwhaiipwvoYHKJt1Jd6k.jpeg';
+import { useT } from '../../i18n';
 
+const t = useT(Astro);
 const services = [
 	{
 		tab: 'Digital Product Design',
 		icon: Desktop,
 		title: 'Digital Product Design.',
-		text: 'Ciptakan pengalaman digital yang relevan dan ramah pengguna, menjembatani kebutuhan manusia dengan pertumbuhan bisnis/organisasimu.',
+		text: t(
+			'Ciptakan pengalaman digital yang relevan dan ramah pengguna, menjembatani kebutuhan manusia dengan pertumbuhan bisnis/organisasimu.',
+			"Create relevant, user-friendly digital experiences that bridge people's needs with the growth of your business or organization.",
+		),
 		tags: ['Mobile-app', 'Web-app', 'Desktop-app', '+more'],
 		image: productImage,
 	},
@@ -25,7 +30,10 @@ const services = [
 		tab: 'Branding Design',
 		icon: PaintBrush,
 		title: 'Branding Design.',
-		text: 'Terjemahkan strategi bisnis/organisasimu menjadi identitas visual yang autentik, memikat, dan mendorong pertumbuhan.',
+		text: t(
+			'Terjemahkan strategi bisnis/organisasimu menjadi identitas visual yang autentik, memikat, dan mendorong pertumbuhan.',
+			"Translate your business or organization's strategy into a visual identity that is authentic, compelling, and drives growth.",
+		),
 		tags: ['Graphic design', 'Content design', 'Illustration', '+more'],
 		// Framer's tablet/phone copy differs from desktop here.
 		mobileTags: ['Branding design', 'Content design', 'Illustration', '+more'],
@@ -35,7 +43,10 @@ const services = [
 		tab: 'UX & Content Writing',
 		icon: Article,
 		title: 'UX, Content, & Copywriting.',
-		text: 'Merajut komunikasi yang jernih untuk menuntun pengguna dengan mudah. Menyusun narasi kreatif yang kuat untuk memikat & membangun kepercayaan audiens terhadap organisasimu.',
+		text: t(
+			'Merajut komunikasi yang jernih untuk menuntun pengguna dengan mudah. Menyusun narasi kreatif yang kuat untuk memikat & membangun kepercayaan audiens terhadap organisasimu.',
+			"Crafting clear communication that guides users with ease. Building strong creative narratives that captivate your audience & earn their trust in your organization.",
+		),
 		tags: ['UX writing', 'Content writing', 'Copywriting', '+more'],
 		mobileTags: ['UX Writing', 'Content Writing', 'Copywriitng'],
 		image: writingImage,
@@ -44,7 +55,10 @@ const services = [
 		tab: 'Developer Partner',
 		icon: Code,
 		title: 'Dedicated Developer Partner.',
-		text: 'Kami bekerja sama dengan partner developer terpercaya untuk percepat pengembangan produk digitalmu lewat kolaborasi yang transparan dan eksekusi konsiten.',
+		text: t(
+			'Kami bekerja sama dengan partner developer terpercaya untuk percepat pengembangan produk digitalmu lewat kolaborasi yang transparan dan eksekusi konsiten.',
+			'We work with trusted developer partners to speed up the development of your digital product through transparent collaboration and consistent execution.',
+		),
 		tags: ['Front-end', 'Custom components', 'CMS intergration', 'Performance'],
 		image: developerImage,
 	},
@@ -67,18 +81,21 @@ const logos = [
 		<div class="content">
 			<header>
 				<div class="headline">
-					<Chip>Layanan</Chip>
-					<h2 class="t-h2">Solusi Kreatif Menyeluruh, Dirancang untuk Tiap Kebutuhan Berbeda</h2>
+					<Chip>{t('Layanan', 'Services')}</Chip>
+					<h2 class="t-h2">{t('Solusi Kreatif Menyeluruh, Dirancang untuk Tiap Kebutuhan Berbeda', 'End-to-End Creative Solutions, Designed for Every Need')}</h2>
 				</div>
 				<p class="lead t-body-m">
-					Ribet harus pindah-pindah vendor untuk penuhi kebutuhan kreatifmu? Kini tak perlu lagi. Kami hadir dengan layanan kreatif
-					lintas disiplin di satu tempat, yang bisa kamu pilih sesuai kebutuhan. <strong>Efisien waktu, tenaga, & biaya.</strong>
+					{t(
+						'Ribet harus pindah-pindah vendor untuk penuhi kebutuhan kreatifmu? Kini tak perlu lagi. Kami hadir dengan layanan kreatif lintas disiplin di satu tempat, yang bisa kamu pilih sesuai kebutuhan.',
+						'Tired of juggling vendors to cover your creative needs? Not anymore. We bring cross-disciplinary creative services together in one place, so you can pick exactly what you need.',
+					)}{' '}
+					<strong>{t('Efisien waktu, tenaga, & biaya.', 'Saving you time, effort, & cost.')}</strong>
 				</p>
 			</header>
 
 			<div class="widget">
 				<div class="sidenav">
-					<div class="tabs" role="tablist" aria-label="Layanan">
+					<div class="tabs" role="tablist" aria-label={t('Layanan', 'Services')}>
 						{
 							services.map(({ tab, icon: Icon }, i) => (
 								<button class:list={['tab', 't-body-s-strong', { active: i === 0 }]} type="button" role="tab" aria-selected={i === 0} aria-controls={`service-${i}`}>
@@ -124,7 +141,7 @@ const logos = [
 				</div>
 			</div>
 
-			<Button href={EMAIL_URL} label="Diskusikan sekarang" size="lg" />
+			<Button href={EMAIL_URL} label={t('Diskusikan sekarang', "Let's talk")} size="lg" />
 		</div>
 	</div>
 </section>

@@ -2,17 +2,22 @@
 import WorkCard from '../../components/WorkCard.astro';
 import { getWorks } from '../../data/works';
 import Base from '../../layouts/Base.astro';
+import { useT } from '../../i18n';
 
+const t = useT(Astro);
 const works = await getWorks();
-const intro = 'Karya masing-masing dari kami yang membuat kami bangga dalam proses dan pengerjaannya.';
+const intro = t(
+	'Karya masing-masing dari kami yang membuat kami bangga dalam proses dan pengerjaannya.',
+	"Work from each of us that we're proud of, in both the process and the craft.",
+);
 ---
 
-<Base title="Karya" description={intro}>
+<Base title={t('Karya', 'Work')} description={intro}>
 	<div class="page">
 		<header>
 			<h1>
-				<span class="t-h1b" data-appear>Karya</span>
-				<span class="t-h1 accent" data-appear style="--appear-delay: 0.2s">Kami.</span>
+				<span class="t-h1b" data-appear>{t('Karya', 'Our')}</span>
+				<span class="t-h1 accent" data-appear style="--appear-delay: 0.2s">{t('Kami.', 'Work.')}</span>
 			</h1>
 			<p class="t-body-m" data-appear style="--appear-delay: 0.4s">{intro}</p>
 		</header>

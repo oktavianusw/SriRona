@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import Crown from '../icons/crown.svg';
 import type { Work } from '../data/works';
+import { langOf, localePath } from '../i18n';
 
 interface Props {
 	work: Work;
@@ -9,7 +10,7 @@ interface Props {
 const { work } = Astro.props;
 ---
 
-<a class="card" href={`/work/${work.slug}`}>
+<a class="card" href={localePath(`/work/${work.slug}`, langOf(Astro))}>
 	<span class="media">
 		<Image
 			src={work.cover.src}

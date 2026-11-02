@@ -3,11 +3,13 @@ import { Image } from 'astro:assets';
 import Button from './Button.astro';
 import Logo from './Logo.astro';
 import background from '../assets/framer/1yjjlVoTnHH4K5HR64OHDOlSVdU.webp';
-import { INSTAGRAM_URL, LINKEDIN_URL, EMAIL_URL } from '../consts';
+import { EMAIL_URL } from '../consts';
+import { getSettings } from '../data/settings';
 import { langOf, localePath, useT } from '../i18n';
 
 const t = useT(Astro);
 const lang = langOf(Astro);
+const { linkedin, instagram } = await getSettings();
 
 const groups = [
 	{
@@ -22,8 +24,8 @@ const groups = [
 	{
 		title: 'Connect',
 		links: [
-			{ href: LINKEDIN_URL, label: 'Linkedin' },
-			{ href: INSTAGRAM_URL, label: 'Instagram' },
+			{ href: linkedin, label: 'Linkedin' },
+			{ href: instagram, label: 'Instagram' },
 		],
 	},
 ];

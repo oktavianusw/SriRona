@@ -12,7 +12,7 @@ Migrasi website Studio SriRona dari Framer ke kode (Astro + Sanity).
 | Hal | Keputusan |
 |---|---|
 | Framework | Astro (statis) |
-| CMS | Sanity — hanya untuk section "Karya"; halaman lain ditulis di kode |
+| CMS | Sanity — section "Karya" + "Pengaturan Situs" (link LinkedIn/Instagram di footer); halaman lain ditulis di kode |
 | Hosting | Vercel |
 | Package manager | pnpm |
 | Alur publish | Publish di Sanity → webhook → build ulang di Vercel |
@@ -82,7 +82,7 @@ pnpm studio:deploy                 # publikasi Studio ke srirona.sanity.studio
 
 Sebelum push ke Vercel, impor dulu: situs tidak lagi membaca karya dari file, jadi tanpa data di Sanity halaman `/work` kosong.
 
-Webhook rebuild: Vercel → Settings → Git → **Deploy Hooks** → buat hook (branch `main`) → salin URL. Sanity (sanity.io/manage → API → **Webhooks**) → Create: URL = URL hook tadi, dataset `production`, trigger Create/Update/Delete, filter `_type == "work"`, method POST, projection kosong.
+Webhook rebuild: Vercel → Settings → Git → **Deploy Hooks** → buat hook (branch `main`) → salin URL. Sanity (sanity.io/manage → API → **Webhooks**) → Create: URL = URL hook tadi, dataset `production`, trigger Create/Update/Delete, filter `_type in ["work", "siteSettings"]`, method POST, projection kosong.
 
 ### Fase 5 — Form kontak
 Pakai Web3Forms (gratis, 250 kiriman/bulan, langsung ke email studio).

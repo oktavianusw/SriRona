@@ -28,7 +28,7 @@ export interface Work {
 }
 
 // useCdn is off so a build triggered by a publish never reads stale content.
-const client = createClient({ projectId: SANITY_PROJECT_ID, dataset: SANITY_DATASET, apiVersion: '2025-01-01', useCdn: false });
+export const client = createClient({ projectId: SANITY_PROJECT_ID, dataset: SANITY_DATASET, apiVersion: '2025-01-01', useCdn: false });
 
 const image = `{ "src": asset->url, "width": asset->metadata.dimensions.width, "height": asset->metadata.dimensions.height, alt }`;
 const query = `*[_type == "work" && defined(slug.current) && defined(cover.asset)] | order(order asc, _createdAt asc) {
